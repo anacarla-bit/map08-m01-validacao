@@ -151,6 +151,17 @@ details.acc .acc-c>img{width:100%;border-radius:16px;object-fit:cover;max-height
 /* Personagens soltos: manter proporção (vence a regra geral de 100% de largura) */
 .situ .situ-pers img,.txt-img [data-pers] img{width:auto;max-width:100%;height:auto;max-height:240px;margin:0 auto;object-fit:contain}
 .txt-img [data-pers] img{max-height:340px}
+/* Recursos obrigatórios */
+.req{position:relative}
+.req.pendente::after{content:attr(data-req-label);position:absolute;top:10px;right:10px;z-index:6;background:var(--sol);color:var(--ink);font:800 11px/1 var(--c);letter-spacing:.6px;text-transform:uppercase;padding:6px 10px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,.18);pointer-events:none;animation:chama 1.6s ease-in-out infinite}
+.alterna.req.pendente::after,.quiz.req.pendente::after,.passos.req.pendente::after{top:-14px;right:6px}
+details.acc.req.pendente::after{top:14px;right:56px}
+@keyframes chama{50%{transform:translateY(-3px)}}
+.fim-mod{flex-direction:column;align-items:center;gap:12px}
+.req-info{font-size:14px;font-weight:800;color:#8a5b00;background:#FFF4CC;border-radius:30px;padding:8px 16px;text-align:center}
+.req-info.pronto{color:var(--verde-esc);background:var(--menta)}
+.modulo:not(.bloq) .req-info:empty{display:none}
+[data-concluir].travado{cursor:not-allowed}
 /* Vídeo em produção */
 .video-prod{position:relative;max-width:920px;margin:30px auto 0;border-radius:28px;overflow:hidden;box-shadow:var(--sombra)}
 .video-prod .tela16{border-radius:0;box-shadow:none}
@@ -616,7 +627,7 @@ body.rev .pend{background:#FFF1B0;border-bottom-color:#E8C547;border-radius:4px;
         </div>
 
         <h3 class="rv" style="font-size:28px;font-style:italic;font-weight:900;color:var(--verde-esc);margin-top:56px">E sabe qual o resultado disso?</h3>
-        <p class="rv" style="color:var(--cinza)">Toque em cada lado para descobrir.</p>
+        <p class="rv" style="color:var(--cinza)">Clique em cada foto para descobrir.</p>
         <div class="lados rv">
           <div class="lado" tabindex="0">
             <div class="foto-l"><img src="assets/fotos/MAP08_M01_IMG-F01_Familia-Campo.jpg" alt="Família no campo"></div>
@@ -1202,8 +1213,9 @@ function render(){
   const pino=d.querySelector('.pino');pino.innerHTML=(i+1)+(s==='bloq'?icoCad:s==='feito'?icoOk:'');});
  document.getElementById('gLista').innerHTML=MODS.map((m,i)=>{const s=estado(i);return `<button class="g-item ${s}" data-i="${i}"><span class="n">${i+1}</span><span><span class="t">${m[0]}</span><br><span class="s">${s==='bloq'?'Bloqueado':s==='feito'?'Concluído ✓':'Disponível agora'} · ${m[1]}</span></span></button>`}).join('');
  document.getElementById('gProg').textContent=feitos+' de 7';
- document.querySelectorAll('.modulo').forEach(s=>{const i=+s.dataset.mod-1;s.classList.toggle('bloq',estado(i)==='bloq')});
- document.querySelectorAll('[data-concluir]').forEach(b=>{const n=+b.dataset.concluir;b.disabled=n<=feitos;b.style.opacity=n<=feitos?.5:1;b.firstChild.textContent=n<=feitos?'Módulo '+n+' concluído ':'Concluir módulo '+n+' '});
+ document.querySelectorAll('.modulo').forEach(s=>{const i=+s.dataset.mod-1;s.classList.toggle('bloq',estado(i)==='bloq');s.hidden=i>feitos});
+ ['video','fim'].forEach(id=>{document.getElementById(id).hidden=feitos<7});
+ document.querySelectorAll('[data-concluir]').forEach(b=>{const n=+b.dataset.concluir,falta=!!b.dataset.falta;b.disabled=n<=feitos||falta;b.style.opacity=(n<=feitos||falta)?.5:1;b.classList.toggle('travado',falta&&n>feitos);b.firstChild.textContent=n<=feitos?'Módulo '+n+' concluído ':'Concluir módulo '+n+' '});
  document.getElementById('mapaMsg').textContent=MSG[Math.min(feitos,7)];
  document.getElementById('trilhaFeita').style.strokeDasharray=(LT*Math.min(feitos,6)/6)+' 4000';
 }
@@ -1211,7 +1223,7 @@ function vaiPara(i){if(estado(i)==='bloq'){avisa(i);return}fechaG();document.get
 function avisa(i){const d=document.querySelector(`.parada[data-i="${i}"] .pino`);if(!d)return;d.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:300})}
 trilha.addEventListener('click',e=>{const b=e.target.closest('.parada');if(b)vaiPara(+b.dataset.i)});
 document.getElementById('gLista').addEventListener('click',e=>{const b=e.target.closest('.g-item');if(b)vaiPara(+b.dataset.i)});
-document.querySelectorAll('[data-concluir]').forEach(b=>b.addEventListener('click',()=>{const n=+b.dataset.concluir;if(n===feitos+1){feitos=n;salva();render();setTimeout(()=>document.getElementById(n<7?'mapa':'video').scrollIntoView({behavior:'smooth'}),250)}}));
+document.querySelectorAll('[data-concluir]').forEach(b=>b.addEventListener('click',()=>{const n=+b.dataset.concluir;if(n===feitos+1&&!b.dataset.falta){feitos=n;salva();render();setTimeout(()=>document.getElementById(n<7?'mapa':'video').scrollIntoView({behavior:'smooth'}),250)}}));
 const gav=document.getElementById('gaveta'),veu=document.getElementById('veu');
 const abreG=()=>{gav.classList.add('on');veu.classList.add('on')},fechaG=()=>{gav.classList.remove('on');veu.classList.remove('on')};
 document.getElementById('abreMapa').onclick=abreG;document.getElementById('fechaMapa').onclick=fechaG;veu.onclick=fechaG;
@@ -1367,6 +1379,36 @@ const prog=document.getElementById('progresso');
 addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+/* ================= RECURSOS OBRIGATÓRIOS =================
+   O módulo só pode ser concluído depois que o aluno explora todos os recursos dele. */
+const REQ=[];
+function req(el,rot){const m=el.closest('.modulo');if(!m)return null;const r={mod:+m.dataset.mod,el,ok:false};REQ.push(r);el.classList.add('req','pendente');el.dataset.reqLabel=rot||'Explore';return r}
+function feito(r){if(!r||r.ok)return;r.ok=true;r.el.classList.remove('pendente');atualizaReq(r.mod)}
+function atualizaReq(n){const rs=REQ.filter(r=>r.mod===n),ok=rs.filter(r=>r.ok).length,b=document.querySelector('[data-concluir="'+n+'"]');if(!b)return;
+ b.dataset.falta=ok<rs.length?'1':'';const info=document.querySelector('[data-req-info="'+n+'"]');
+ if(info){info.textContent=ok<rs.length?'Explore todos os recursos deste módulo para concluí-lo: '+ok+' de '+rs.length+' explorados.':'Tudo explorado! Agora você pode concluir o módulo.';info.classList.toggle('pronto',ok===rs.length)}
+ render()}
+// carrosséis: ver todos os slides
+document.querySelectorAll('.modulo .carro').forEach(c=>{const dots=c.querySelector('.dots'),n=dots.children.length,vis=new Set([0]),r=req(c,'Veja todos');
+ c.querySelectorAll('.seta').forEach(s=>s.addEventListener('click',()=>{vis.add([...dots.children].findIndex(d=>d.classList.contains('on')));if(vis.size>=n)feito(r)}))});
+// painéis lado a lado e cartas: abrir/virar cada um
+document.querySelectorAll('.modulo .lado').forEach(l=>{const r=req(l,'Clique');l.addEventListener('click',()=>feito(r));l.addEventListener('keydown',e=>{if(e.key==='Enter')feito(r)})});
+document.querySelectorAll('.modulo .flip').forEach(l=>{const r=req(l,'Vire a carta');l.addEventListener('click',()=>feito(r));l.addEventListener('keydown',e=>{if(e.key==='Enter')feito(r)})});
+// roda dos pilares: ver os 5
+(()=>{const pai=document.querySelector('.pilares');if(!pai)return;const r=req(pai,'Veja os 5 pilares'),vis=new Set([0]);
+ document.querySelectorAll('#roda button').forEach((b,i)=>b.addEventListener('click',()=>{vis.add(i);if(vis.size>=5)feito(r)}))})();
+// alternadores (simuladores, exemplos, modalidades, fluxos): clicar em todas as opções
+document.querySelectorAll('.modulo .alterna').forEach(a=>{const bs=[...a.querySelectorAll('button')],vis=new Set(bs.filter(b=>b.classList.contains('on')).map(b=>bs.indexOf(b))),r=req(a,'Clique nas opções');
+ bs.forEach((b,i)=>b.addEventListener('click',()=>{vis.add(i);if(vis.size>=bs.length)feito(r)}))});
+// checklist da oferta: marcar os 5 passos
+(()=>{const ps=document.getElementById('passos');if(!ps)return;const r=req(ps,'Marque os passos');
+ ps.querySelectorAll('.passo').forEach(p=>p.addEventListener('click',()=>{if(ps.querySelectorAll('.passo.on').length>=5)feito(r)}))})();
+// abas recolhíveis: abrir
+document.querySelectorAll('.modulo details.acc').forEach(d=>{const r=req(d,'Abra');d.addEventListener('toggle',()=>{if(d.open)feito(r)})});
+// atividades: responder
+document.querySelectorAll('.modulo .quiz').forEach(q=>{const r=req(q,'Responda');q.querySelectorAll('.alt').forEach(b=>b.addEventListener('click',()=>feito(r)))});
+// contador acima de cada botão de concluir
+document.querySelectorAll('[data-concluir]').forEach(b=>{const n=+b.dataset.concluir,p=document.createElement('p');p.className='req-info';p.dataset.reqInfo=n;b.parentNode.insertBefore(p,b);atualizaReq(n)});
 render();
 
 </script>
