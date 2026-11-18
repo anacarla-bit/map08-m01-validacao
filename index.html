@@ -148,6 +148,9 @@ details.acc .acc-c>img{width:100%;border-radius:16px;object-fit:cover;max-height
 .flip .f h4{font-size:21px}
 @media (max-width:900px){.cards-lim,.txt-img,.quiz.dois{grid-template-columns:1fr}.txt-img [data-pers] img{max-height:260px}}
 @media (max-width:560px){details.acc .acc-c{grid-template-columns:1fr}}
+/* Personagens soltos: manter proporção (vence a regra geral de 100% de largura) */
+.situ .situ-pers img,.txt-img [data-pers] img{width:auto;max-width:100%;height:auto;max-height:240px;margin:0 auto;object-fit:contain}
+.txt-img [data-pers] img{max-height:340px}
 /* Vídeo em produção */
 .video-prod{position:relative;max-width:920px;margin:30px auto 0;border-radius:28px;overflow:hidden;box-shadow:var(--sombra)}
 .video-prod .tela16{border-radius:0;box-shadow:none}
