@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguro Tranquilidade Financeira | Treinamento</title>
+<style>
+/* Fontes embutidas (Exo 2 e Nunito Sans, licença SIL OFL, subconjunto latino) */
+@font-face{font-family:'Exo 2';font-style:normal;font-weight:100 900;font-display:swap;src:url(assets/fontes/Exo2-Normal-latin.woff2) format('woff2')}
+@font-face{font-family:'Exo 2';font-style:italic;font-weight:100 900;font-display:swap;src:url(assets/fontes/Exo2-Italic-latin.woff2) format('woff2')}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:200 1000;font-display:swap;src:url(assets/fontes/NunitoSans-Normal-latin.woff2) format('woff2')}
+/* MAP08 M01 — Plano visual interativo v0.1 (proposta)
+   Identidade do cliente: Sicredi + Mapfre (inspiração: Manual de Bordo Prestamista, AP01).
+   Fontes propostas: Exo 2 (títulos, itálico) e Nunito Sans (corpo). A confirmar com o cliente. */
+:root{
+  --verde:#62C633; --verde-2:#3EA00F; --verde-esc:#136D38; --verde-noite:#0B4424;
+  --menta:#DDF3D0; --menta-2:#EEF8E8; --off:#F5F7F2; --branco:#fff;
+  --ink:#1D1D1B; --cinza:#55605A; --linha:#D6DED2; --mapfre:#E30613; --sol:#FFCD00;
+  --raio:22px; --sombra:0 14px 40px -18px rgba(11,68,36,.45);
+  --t:'Exo 2',system-ui,sans-serif; --c:'Nunito Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:var(--c);color:var(--ink);background:var(--branco);font-size:17px;line-height:1.6;overflow-x:hidden}
+img,svg{max-width:100%;display:block}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+h1,h2,h3,h4{font-family:var(--t);line-height:1.1}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.tit{font-style:italic;font-weight:900;color:var(--verde-esc);font-size:clamp(30px,4.2vw,48px);letter-spacing:-.5px}
+.tit.claro{color:var(--verde)}
+.sub{font-family:var(--t);font-weight:700;color:var(--verde-2);font-size:15px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sub::before{content:"";width:34px;height:3px;border-radius:3px;background:var(--verde)}
+.lead{font-size:19px;color:var(--cinza);max-width:760px}
+p+p{margin-top:12px}
+b,strong{font-weight:800}
+.dest{color:var(--verde-esc);font-weight:800}
+section{position:relative}
+.sec{padding:96px 0}
+.sec.off{background:var(--off)}
+.sec.esc{background:var(--verde-esc);color:#fff}
+.sec.esc .lead{color:#d9f0cf}
+.sec.esc .tit{color:#fff}
+
+/* ---------- Barra superior + progresso ---------- */
+.topo{position:fixed;inset:0 0 auto 0;height:64px;z-index:50;background:var(--verde-noite);display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 6px 24px -12px rgba(0,0,0,.5)}
+.topo img{height:22px;width:auto}
+.topo .acoes{display:flex;gap:10px;align-items:center}
+.btn-mapa{display:flex;align-items:center;gap:10px;background:var(--verde);color:var(--verde-noite);font-family:var(--t);font-weight:800;font-style:italic;padding:9px 18px 9px 12px;border-radius:40px;transition:.2s}
+.btn-mapa:hover{background:#fff}
+.btn-mapa svg{width:22px;height:22px}
+.progresso{position:fixed;top:64px;left:0;height:5px;background:var(--verde);width:0;z-index:51;transition:width .15s;border-radius:0 4px 4px 0}
+.chip-rev{font-size:12px;font-weight:800;letter-spacing:.5px;color:#cdebc0;border:1.5px solid #3c7a52;padding:6px 12px;border-radius:30px;display:flex;align-items:center;gap:6px}
+.chip-rev input{accent-color:var(--verde)}
+
+/* ---------- Gaveta: menu interativo ---------- */
+.veu{position:fixed;inset:0;background:rgba(5,30,15,.55);backdrop-filter:blur(3px);z-index:60;opacity:0;pointer-events:none;transition:.3s}
+.veu.on{opacity:1;pointer-events:auto}
+.gaveta{position:fixed;top:0;right:0;height:100%;width:min(440px,92vw);background:var(--off);z-index:61;transform:translateX(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.gaveta.on{transform:none}
+.gaveta header{background:var(--verde-esc);color:#fff;padding:26px 26px 64px;position:relative;overflow:hidden}
+.gaveta header h3{font-style:italic;font-weight:900;font-size:30px}
+.gaveta header p{color:#cfeec0;font-size:15px}
+.gaveta header .onda{position:absolute;left:0;bottom:-1px;width:100%;height:46px}
+.gaveta .fechar{position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px}
+.gaveta .lista{padding:6px 22px 22px;overflow:auto;flex:1}
+.g-item{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:12px;border-radius:16px;margin-top:8px;background:#fff;border:2px solid transparent;transition:.2s}
+.g-item .n{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:var(--t);font-weight:900;font-style:italic;font-size:20px;background:var(--menta);color:var(--verde-esc)}
+.g-item .t{font-weight:800;font-size:15px;line-height:1.25}
+.g-item .s{font-size:12.5px;color:var(--cinza)}
+.g-item.atual{border-color:var(--verde)}
+.g-item.atual .n{background:var(--verde);color:#fff}
+.g-item.feito .n{background:var(--verde-esc);color:#fff}
+.g-item.bloq{opacity:.5;cursor:not-allowed}
+.g-item.bloq .n{background:#e3e6e1;color:#8a948d}
+.g-item:not(.bloq):hover{transform:translateX(-4px);border-color:var(--verde)}
+.g-rodape{padding:16px 22px;border-top:1px solid var(--linha);font-size:13px;color:var(--cinza);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.g-rodape button{color:var(--verde-esc);font-weight:800;text-decoration:underline}
+
+/* ---------- Capa ---------- */
+.capa{min-height:100vh;background:var(--verde-esc);color:#fff;padding:120px 0 120px;overflow:hidden;display:flex;align-items:center}
+.capa .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;width:100%}
+.capa .selo{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:6px 14px;border-radius:30px;font-weight:700;font-size:14px;margin-bottom:22px}
+.capa .selo i{width:8px;height:8px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 4px rgba(98,198,51,.3)}
+.capa h1{font-style:italic;font-weight:900;font-size:clamp(46px,7vw,88px);letter-spacing:-1.5px;line-height:.95;color:var(--verde)}
+.capa h1 span{display:block;color:#fff;font-size:.42em;letter-spacing:0;font-weight:800;margin-bottom:10px}
+.capa p{font-size:19px;color:#d4efc6;margin:22px 0 32px;max-width:520px}
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:12px;background:var(--verde);color:var(--verde-noite);font-family:var(--t);font-weight:800;font-style:italic;font-size:19px;padding:15px 28px;border-radius:50px;box-shadow:0 10px 30px -10px rgba(98,198,51,.8);transition:.25s}
+.btn:hover{transform:translateY(-3px);background:#fff}
+.btn.esc{background:var(--verde-esc);color:#fff;box-shadow:var(--sombra)}
+.btn.esc:hover{background:var(--verde-noite)}
+.btn svg{width:22px;height:22px}
+.capa .ilu{position:relative}
+.capa .ilu .bolha{position:absolute;inset:6% 2% 0 8%;background:var(--verde);border-radius:58% 42% 51% 49%/46% 55% 45% 54%;animation:morph 12s ease-in-out infinite}
+.capa .ilu svg{position:relative}
+@keyframes morph{50%{border-radius:42% 58% 38% 62%/58% 41% 59% 42%}}
+.capa .rolar{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);font-size:13px;color:#bfe6ad;display:flex;flex-direction:column;align-items:center;gap:6px;animation:sobe 2s infinite}
+@keyframes sobe{50%{transform:translate(-50%,6px)}}
+.onda-base{position:absolute;left:0;bottom:-1px;width:100%;height:110px;pointer-events:none}
+.folha{position:absolute;width:26px;height:40px;border-radius:0 100% 0 100%;background:var(--verde);opacity:.9}
+.flutua{animation:flutua 6s ease-in-out infinite}
+@keyframes flutua{50%{transform:translateY(-12px) rotate(6deg)}}
+
+/* ---------- Fotos + ilustrações ---------- */
+.combo{position:relative;width:100%}
+.combo::before{content:"";position:absolute;inset:9% -5% -5% 12%;background:var(--verde);border-radius:42% 58% 38% 62%/58% 41% 59% 42%;z-index:0}
+.combo.esc::before{background:var(--verde-esc)}
+.foto-org{position:relative;z-index:1;border-radius:58% 42% 51% 49%/46% 55% 45% 54%;overflow:hidden;aspect-ratio:4/3.3;box-shadow:0 20px 50px -24px rgba(0,0,0,.55)}
+.foto-org img,.foto-cena img{width:100%;height:100%;object-fit:cover;display:block}
+.combo .pers{position:absolute;z-index:2;left:-9%;bottom:-8%;width:30%}
+.combo .pers.dir{left:auto;right:-6%}
+.combo .pers svg{width:100%;height:auto;filter:drop-shadow(0 12px 14px rgba(0,0,0,.22))}
+.combo .selo-esc{position:absolute;z-index:3;right:2%;top:2%;width:17%}
+.foto-cena{border-radius:24px 24px 24px 4px;overflow:hidden;aspect-ratio:16/9;margin-bottom:14px;position:relative}
+.foto-cena span{position:absolute;left:12px;bottom:10px;background:rgba(11,68,36,.85);color:#fff;font-weight:800;font-size:13px;padding:4px 10px;border-radius:20px}
+.lados .lado .foto-l{height:190px;border-radius:22px 22px 22px 4px;overflow:hidden;margin-bottom:16px}
+.lados .lado .foto-l img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.lados .lado:hover .foto-l img{transform:scale(1.05)}
+.ex-foto{width:96px;height:96px;border-radius:50% 50% 50% 8px;overflow:hidden;flex:none;border:4px solid var(--verde)}
+.ex-foto img{width:100%;height:100%;object-fit:cover}
+.ex-cab{display:flex;gap:16px;align-items:center;margin-top:16px}
+.ex-cab .ficha{flex:1;margin-top:0}
+
+/* Componentes da versão final */
+.subt{font-family:var(--t);font-style:italic;font-weight:900;color:var(--verde-esc);font-size:clamp(24px,3vw,32px);margin:56px 0 12px}
+.quiz.dois{grid-template-columns:1fr 1fr}
+.feedback.erro{background:#8a3b2e}
+.feedback .ic-x{display:none}.feedback.erro .ic-ok{display:none}.feedback.erro .ic-x{display:block}
+.alt.escolhida{box-shadow:0 0 0 3px var(--verde-esc)}
+.alt.errada.escolhida{box-shadow:0 0 0 3px #8a3b2e;opacity:1}
+.cards-lim{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.card-lim{background:#fff;border-radius:22px;padding:22px;border:2px solid var(--linha)}
+.card-lim h4{font-family:var(--t);font-style:italic;font-weight:900;color:var(--verde-esc);font-size:22px;margin-bottom:10px}
+.card-lim .l{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px dashed var(--linha);font-size:15px}
+.card-lim .l b{color:var(--verde-esc);text-align:right}
+.txt-img{display:grid;grid-template-columns:1fr 300px;gap:34px;align-items:center;margin-top:16px}
+.txt-img [data-pers] img{max-height:360px;width:auto;margin:0 auto}
+.situ-pers img{max-height:240px;width:auto;margin:0 auto}
+details.acc{background:#fff;border:2px solid var(--linha);border-radius:20px;margin-top:22px;overflow:hidden}
+details.acc summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:800;color:var(--verde-esc);display:flex;justify-content:space-between;align-items:center;font-size:18px}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"+";font-size:28px;line-height:1;color:var(--verde)}
+details.acc[open] summary::after{content:"–"}
+details.acc[open]{border-color:var(--verde)}
+details.acc .acc-c{padding:0 22px 22px;display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center}
+details.acc .acc-c>img{width:100%;border-radius:16px;object-fit:cover;max-height:200px}
+.modulo.bloq .so-livre{display:none}
+.flip .f h4{font-size:21px}
+@media (max-width:900px){.cards-lim,.txt-img,.quiz.dois{grid-template-columns:1fr}.txt-img [data-pers] img{max-height:260px}}
+@media (max-width:560px){details.acc .acc-c{grid-template-columns:1fr}}
+/* Vídeo em produção */
+.video-prod{position:relative;max-width:920px;margin:30px auto 0;border-radius:28px;overflow:hidden;box-shadow:var(--sombra)}
+.video-prod .tela16{border-radius:0;box-shadow:none}
+.vp-veu{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,68,36,.45),rgba(11,68,36,.88));z-index:2}
+.video-prod .letr,.video-prod .marcas{display:none}
+.video-prod .tela16 .cena{justify-content:center}
+.cenas-lista[hidden]{display:none}
+.vp-card{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:24px}
+.vp-ico{width:76px;height:76px;border-radius:24px;background:var(--verde);color:var(--verde-noite);display:grid;place-items:center;margin-bottom:14px;animation:pulsa 2s infinite}
+.vp-ico svg{width:44px;height:44px}
+.vp-tag{font-size:12.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:5px 14px;border-radius:30px;margin-bottom:12px}
+.vp-card h3{font-family:var(--t);font-style:italic;font-weight:900;font-size:clamp(22px,3.2vw,34px)}
+.vp-card p{max-width:520px;margin-top:8px;color:#e2f5d8;font-size:16px}
+.vp-dots{display:flex;gap:6px;margin-top:16px}
+.vp-dots i{width:8px;height:8px;border-radius:8px;background:rgba(255,255,255,.35);transition:.3s}
+.vp-dots i.on{width:24px;background:var(--verde)}
+@media (max-width:560px){.vp-card p{display:none}.vp-ico{width:56px;height:56px}.vp-ico svg{width:32px;height:32px}}
+[data-ilu] img,[data-pers] img{display:block;width:100%;height:auto}
+.combo .pers img{filter:drop-shadow(0 12px 14px rgba(0,0,0,.22))}
+.tela16 .cena img{height:80%;width:auto;max-width:48%;object-fit:contain}
+.tela16 .cena>div[style*="flex"]{height:80%}
+.carro .slide [data-ilu] img{max-height:220px;width:auto;margin:0 auto}
+
+/* ---------- Apresentação: abas ---------- */
+.apres{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.abas-nav{display:flex;gap:8px;background:var(--menta-2);padding:6px;border-radius:40px;margin:26px 0 18px;flex-wrap:wrap}
+.abas-nav button{flex:1;padding:11px 16px;border-radius:30px;font-weight:800;font-size:15px;color:var(--verde-esc);display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;min-width:120px}
+.abas-nav button svg{width:20px;height:20px}
+.abas-nav button.on{background:var(--verde-esc);color:#fff;box-shadow:var(--sombra)}
+.aba-painel{display:none;animation:entra .45s ease}
+.aba-painel.on{display:block}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}}
+.mods-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.mods-mini div{background:#fff;border:1.5px solid var(--linha);border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.3;font-weight:700}
+.mods-mini em{display:block;font-family:var(--t);font-style:italic;font-weight:900;color:var(--verde);font-size:22px}
+.cartao-info{display:flex;gap:20px;align-items:center;background:#fff;border-radius:var(--raio);padding:24px;border:1.5px solid var(--linha)}
+.cartao-info .big{font-family:var(--t);font-style:italic;font-weight:900;font-size:64px;color:var(--verde);line-height:1}
+
+/* ---------- Mapa da jornada (trilha) ---------- */
+.mapa{background:var(--verde-esc);color:#fff;padding:90px 0 120px;overflow:hidden}
+.mapa .lead{color:#d9f0cf}
+.mapa .cab{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.trilha{position:relative;margin-top:40px;aspect-ratio:1100/420;width:100%}
+.trilha svg.caminho{position:absolute;inset:0;width:100%;height:100%}
+.parada{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;width:150px;text-align:center}
+.parada .pino{width:74px;height:74px;border-radius:24px;display:grid;place-items:center;background:#fff;color:var(--verde-esc);font-family:var(--t);font-weight:900;font-style:italic;font-size:30px;box-shadow:0 10px 0 -2px rgba(0,0,0,.18);transition:.25s;position:relative;transform:rotate(-4deg)}
+.parada .pino svg{width:22px;height:22px;position:absolute;right:-8px;top:-8px;background:var(--verde-noite);border-radius:50%;padding:4px}
+.parada .rot{font-weight:800;font-size:13.5px;line-height:1.2;color:#e7f6df;background:rgba(11,68,36,.75);padding:4px 10px;border-radius:10px}
+.parada.atual .pino{background:var(--verde);color:var(--verde-noite);animation:pulsa 1.8s infinite}
+@keyframes pulsa{0%{box-shadow:0 0 0 0 rgba(98,198,51,.7),0 10px 0 -2px rgba(0,0,0,.18)}70%{box-shadow:0 0 0 18px rgba(98,198,51,0),0 10px 0 -2px rgba(0,0,0,.18)}}
+.parada.feito .pino{background:var(--verde-noite);color:var(--verde)}
+.parada.bloq{cursor:not-allowed}
+.parada.bloq .pino{background:#2a7a4a;color:#7fb393}
+.parada:not(.bloq):hover .pino{transform:rotate(0) translateY(-6px) scale(1.06)}
+.parada .dica{position:absolute;bottom:calc(100% + 6px);background:#fff;color:var(--ink);font-size:13px;padding:8px 12px;border-radius:12px;width:190px;opacity:0;pointer-events:none;transition:.2s;box-shadow:var(--sombra)}
+.parada:hover .dica{opacity:1}
+.legenda{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#cfeec0;margin-top:18px}
+.legenda span{display:flex;align-items:center;gap:8px}
+.legenda i{width:16px;height:16px;border-radius:5px;display:inline-block}
+
+/* ---------- Abertura de módulo ---------- */
+.mod-abre{background:var(--off);padding:70px 0 0;overflow:hidden}
+.mod-abre .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.mod-abre .ilu-mod.combo{margin:0 0 70px 6%;max-width:520px}
+.mod-num{font-family:var(--t);font-style:italic;font-weight:900;font-size:120px;line-height:.8;color:var(--menta);-webkit-text-stroke:2px var(--verde)}
+.mod-abre .txt{padding-bottom:70px}
+.mod-abre h2{margin:10px 0 16px}
+.mod-bloqueado{display:none}
+.modulo.bloq .mod-conteudo{display:none}
+.modulo.bloq .mod-bloqueado{display:flex;gap:18px;align-items:center;background:#fff;border:2px dashed var(--linha);border-radius:var(--raio);padding:22px;margin:0 0 70px}
+.mod-bloqueado svg{width:46px;height:46px;flex:none}
+
+/* ---------- Carrossel ---------- */
+.carro{background:var(--verde-esc);color:#fff;border-radius:30px;padding:40px;position:relative;overflow:hidden;box-shadow:var(--sombra)}
+.carro .janela{overflow:hidden}
+.carro .trilho{display:flex;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.carro .slide{min-width:100%;display:grid;grid-template-columns:200px 1fr;gap:30px;align-items:center;padding-right:10px}
+.carro .slide p{font-size:20px;line-height:1.5}
+.carro .ctrl{display:flex;gap:10px;align-items:center;margin-top:24px}
+.carro .ctrl button.seta{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center}
+.carro .ctrl button.seta:hover{background:var(--verde);color:var(--verde-noite)}
+.carro .dots{display:flex;gap:8px;margin-left:auto}
+.carro .dots i{width:10px;height:10px;border-radius:10px;background:rgba(255,255,255,.3);transition:.3s}
+.carro .dots i.on{width:30px;background:var(--verde)}
+
+/* ---------- Alternador (associado x Sicredi) ---------- */
+.lados{display:grid;grid-template-columns:1fr 1fr;border-radius:30px;overflow:hidden;box-shadow:var(--sombra);margin-top:28px}
+.lados .lado{padding:34px;background:#fff;cursor:pointer;transition:.35s;position:relative}
+.lados .lado+.lado{background:var(--menta-2)}
+.lados .lado .ilu-l{height:150px;margin-bottom:14px}
+.lados .lado .ilu-l svg{height:100%;width:auto}
+.lados .lado h4{font-size:26px;font-style:italic;font-weight:900;color:var(--verde-esc);margin-bottom:8px}
+.lados .lado .mais{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.lados .lado.on .mais{max-height:420px}
+.lados .lado .abrir{margin-top:12px;font-weight:800;color:var(--verde-2);display:flex;align-items:center;gap:6px;font-size:15px}
+.lados .lado.on .abrir{display:none}
+.lados .lado.on{background:var(--verde-esc);color:#fff}
+.lados .lado.on h4{color:var(--verde)}
+
+/* ---------- Destaque ---------- */
+.destaque{display:flex;gap:22px;align-items:center;background:var(--verde);color:var(--verde-noite);border-radius:0 40px 40px 0;padding:26px 34px;margin:34px 0;font-weight:800;font-size:19px;position:relative}
+.destaque::before{content:"";position:absolute;left:-200vw;right:100%;top:0;bottom:0;background:var(--verde)}
+.destaque svg{width:54px;height:54px;flex:none}
+
+/* ---------- Flip cards ---------- */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:26px}
+.flip{perspective:1200px;height:260px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,1.4,.4,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .v{position:absolute;inset:0;backface-visibility:hidden;border-radius:26px;padding:26px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flip .f{background:var(--verde-esc);color:#fff}
+.flip .f svg{width:110px;height:110px;margin-bottom:10px}
+.flip .f h4{font-size:26px;font-style:italic;font-weight:900}
+.flip .f small{color:#bfe6ad;font-weight:700;margin-top:6px;display:flex;gap:6px;align-items:center}
+.flip .v{background:var(--verde);color:var(--verde-noite);transform:rotateY(180deg);font-weight:800;font-size:19px}
+
+/* ---------- Bloco de situação (Reforçando conceitos) ---------- */
+.situ{display:grid;grid-template-columns:240px 1fr;gap:30px;align-items:center;background:#fff;border-radius:30px;padding:30px;border:1.5px solid var(--linha);margin-top:22px}
+.balao{background:var(--menta-2);border-radius:22px 22px 22px 4px;padding:18px 22px;font-weight:700;position:relative}
+.fim-mod{display:flex;justify-content:center;padding:50px 0 10px}
+
+/* ---------- Vitrine de interações ---------- */
+.amostra-tag{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--verde-esc);background:var(--menta);padding:6px 12px;border-radius:20px;margin-bottom:14px}
+.painel{background:#fff;border-radius:30px;padding:34px;box-shadow:var(--sombra);margin-top:26px}
+.sec.off .painel{box-shadow:0 14px 40px -24px rgba(11,68,36,.4)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center}
+
+/* Pilares (M2) */
+.pilares{display:grid;grid-template-columns:320px 1fr;gap:34px;align-items:center}
+.roda{position:relative;aspect-ratio:1}
+.roda .centro{position:absolute;inset:30%;border-radius:50%;background:var(--verde-esc);display:grid;place-items:center}
+.roda .centro svg{width:62%}
+.roda button{position:absolute;width:30%;aspect-ratio:1;border-radius:50%;background:var(--menta);display:grid;place-items:center;transform:translate(-50%,-50%);transition:.25s;border:3px solid #fff}
+.roda button svg{width:56%}
+.roda button.on,.roda button:hover{background:var(--verde);transform:translate(-50%,-50%) scale(1.1)}
+.pilar-txt h4{font-size:30px;font-style:italic;font-weight:900;color:var(--verde-esc);margin-bottom:8px}
+.pilar-txt .num{font-family:var(--t);font-weight:900;font-style:italic;color:var(--verde);font-size:18px}
+
+/* Simulador herança (M3) */
+.sim-controles label{display:block;font-weight:800;font-size:14px;color:var(--cinza);margin-top:16px}
+.sim-controles .val{font-family:var(--t);font-weight:900;font-style:italic;color:var(--verde-esc);font-size:28px}
+input[type=range]{width:100%;accent-color:var(--verde-esc);height:28px}
+.alterna{display:flex;background:var(--menta-2);border-radius:40px;padding:5px;margin-top:20px}
+.alterna button{flex:1;padding:11px;border-radius:30px;font-weight:800;font-size:15px;color:var(--verde-esc);transition:.25s}
+.alterna button.on{background:var(--verde-esc);color:#fff}
+.alterna button.on.sem{background:#9a3b2d}
+.barras{display:flex;gap:22px;align-items:end;height:260px;padding:0 10px;border-bottom:3px solid var(--ink)}
+.barra{flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;height:100%}
+.barra .col{width:100%;border-radius:14px 14px 0 0;transition:height .6s cubic-bezier(.2,.9,.3,1.2);position:relative;min-height:4px}
+.barra .v{font-family:var(--t);font-weight:900;font-style:italic;font-size:20px}
+.barra small{font-weight:800;font-size:13px;text-align:center;line-height:1.2}
+.resultado{margin-top:20px;padding:16px 20px;border-radius:18px;background:var(--menta-2);font-weight:700;transition:.3s}
+.resultado.alerta{background:#fdeeea;color:#8a2f22}
+
+/* Idade-limite */
+.regua{position:relative;height:90px;margin-top:30px}
+.regua .base{position:absolute;left:0;right:0;top:40px;height:14px;border-radius:14px;background:var(--menta)}
+.regua .op{position:absolute;top:40px;height:14px;border-radius:14px;background:var(--verde-esc);transition:.6s}
+.regua .lim{position:absolute;top:22px;width:3px;height:50px;background:var(--mapfre)}
+.regua .lim span{position:absolute;top:-24px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12.5px;font-weight:800;color:var(--mapfre)}
+.regua .marca{position:absolute;top:62px;font-size:12.5px;font-weight:800;transform:translateX(-50%);white-space:nowrap;color:var(--cinza);transition:.6s}
+.ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.ficha div{background:var(--off);border-radius:14px;padding:10px 14px;font-size:13px;color:var(--cinza)}
+.ficha b{display:block;color:var(--ink);font-size:17px}
+
+/* Fixo x vinculado (M4) */
+.grafico{width:100%;height:auto}
+.grafico .b{transition:height .6s,y .6s}
+
+/* DPS (M5) */
+.dps-res{display:flex;gap:18px;align-items:center;border-radius:22px;padding:20px 24px;margin-top:22px;transition:.3s;background:var(--menta-2)}
+.dps-res .ico{width:64px;height:64px;flex:none;border-radius:20px;display:grid;place-items:center;background:var(--verde);color:#fff}
+.dps-res .ico svg{width:36px}
+.dps-res h4{font-size:24px;font-style:italic;font-weight:900;color:var(--verde-esc)}
+.dps-res.com .ico{background:var(--sol);color:var(--ink)}
+.dps-res.fora{background:#fdeeea}
+.dps-res.fora .ico{background:#9a3b2d}
+.dps-res.fora h4{color:#8a2f22}
+.passos{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:30px;counter-reset:p}
+.passo{background:#fff;border:2px solid var(--linha);border-radius:20px;padding:18px 14px;text-align:center;cursor:pointer;transition:.25s;position:relative}
+.passo svg{width:56px;height:56px;margin:0 auto 8px}
+.passo b{font-size:14px;line-height:1.25;display:block}
+.passo::before{counter-increment:p;content:counter(p);position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--verde-esc);color:#fff;font-weight:900;font-size:14px;display:grid;place-items:center}
+.passo.on{border-color:var(--verde);background:var(--menta-2);transform:translateY(-6px)}
+.passo .chk{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--verde);color:#fff;display:none;place-items:center;font-size:13px}
+.passo.on .chk{display:grid}
+
+/* Prêmio (M6) */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--t);font-weight:800;font-size:20px;margin:16px 0}
+.formula .peca{background:var(--menta-2);border:2px solid var(--verde);border-radius:14px;padding:8px 14px;display:flex;flex-direction:column;line-height:1.1}
+.formula .peca small{font-family:var(--c);font-size:11px;color:var(--cinza);font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.formula .igual{background:var(--verde-esc);color:#fff;border-color:var(--verde-esc)}
+.formula .igual small{color:#bfe6ad}
+.campo{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:14px;color:var(--cinza)}
+.campo input,.campo select{font:inherit;font-weight:700;color:var(--ink);padding:10px 12px;border:2px solid var(--linha);border-radius:12px;background:#fff}
+.campos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.taxas{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:14px;margin-top:10px}
+.taxas td{padding:7px 12px;background:var(--off)}
+.taxas td:first-child{border-radius:10px 0 0 10px;font-weight:700}
+.taxas td:last-child{border-radius:0 10px 10px 0;text-align:right;font-weight:800;color:var(--verde-esc)}
+.taxas tr.on td{background:var(--verde);color:var(--verde-noite)}
+.taxas-scroll{max-height:300px;overflow:auto;padding-right:6px}
+
+/* Atendimento (M7) */
+.canais{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:22px}
+.canal{border-radius:24px;padding:24px;background:#fff;border:2px solid var(--linha)}
+.canal h4{font-size:22px;font-style:italic;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.canal.mapfre h4{color:var(--mapfre)}
+.canal.sicredi h4{color:var(--verde-esc)}
+.tel{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px dashed var(--linha);font-size:14px}
+.tel b{font-family:var(--t);font-size:20px;font-style:italic;white-space:nowrap}
+.fluxo{display:flex;gap:0;align-items:stretch;margin-top:20px;flex-wrap:wrap}
+.fluxo .et{flex:1;min-width:170px;background:var(--off);padding:18px;border-radius:18px;position:relative;margin-right:26px;font-size:15px}
+.fluxo .et:last-child{margin-right:0}
+.fluxo .et:not(:last-child)::after{content:"➜";position:absolute;right:-22px;top:50%;transform:translateY(-50%);color:var(--verde);font-size:18px}
+.fluxo .et b{display:block;color:var(--verde-esc);font-family:var(--t);font-style:italic;font-size:17px;margin-bottom:4px}
+.caminho-sis{font-family:var(--t);font-weight:700;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.caminho-sis span{background:#fff;border:1.5px solid var(--verde);border-radius:8px;padding:2px 8px;font-size:13px}
+
+/* Quiz */
+.quiz{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
+.alt{background:#fff;border:2px solid var(--linha);border-radius:24px;padding:22px 18px 18px;display:flex;flex-direction:column;gap:12px;text-align:left;transition:.25s;position:relative}
+.alt .letra{width:44px;height:44px;border-radius:14px;background:var(--menta);color:var(--verde-esc);font-family:var(--t);font-weight:900;font-style:italic;font-size:22px;display:grid;place-items:center}
+.alt p{font-size:15px;font-weight:700;line-height:1.35;flex:1}
+.alt .escolher{background:var(--verde-esc);color:#fff;font-weight:800;border-radius:30px;padding:9px;text-align:center;font-size:14px}
+.alt:not([disabled]):hover{border-color:var(--verde);transform:translateY(-4px)}
+.alt.certa{border-color:var(--verde);background:var(--menta-2)}
+.alt.certa .letra{background:var(--verde);color:#fff}
+.alt.errada{opacity:.55}
+.alt[disabled]{cursor:default}
+.alt[disabled] .escolher{visibility:hidden}
+.feedback{display:none;margin-top:20px;padding:22px 26px;border-radius:22px;background:var(--verde-esc);color:#fff;animation:entra .4s}
+.feedback.on{display:flex;gap:18px;align-items:center}
+.feedback svg{width:56px;flex:none}
+
+/* Vídeo storyboard */
+.story{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:center;margin-top:28px}
+.tela16{aspect-ratio:16/9;border-radius:24px;overflow:hidden;position:relative;background:var(--off);box-shadow:var(--sombra)}
+.tela16 .cena{position:absolute;inset:0;opacity:0;transition:opacity .5s;display:flex;align-items:center;justify-content:center;gap:4%;padding:5%}
+.tela16 .cena.on{opacity:1}
+.tela16 .cena svg{height:78%;width:auto}
+.tela16 .letr{font-family:var(--t);font-style:italic;font-weight:900;font-size:clamp(18px,2.6vw,34px);color:var(--verde-esc);line-height:1.05;max-width:46%}
+.tela16 .letr small{display:block;font-size:.5em;color:var(--verde-2);margin-top:8px;font-weight:800}
+.tela16 .marcas{position:absolute;right:14px;bottom:10px;background:var(--verde-esc);border-radius:20px;padding:5px 12px}
+.tela16 .marcas img{height:12px;width:auto}
+.tela16 .tempo{position:absolute;left:14px;bottom:12px;font-size:12px;font-weight:800;color:var(--cinza)}
+.tela16 .onda-v{position:absolute;left:0;right:0;bottom:0;height:22%}
+.cenas-lista{display:flex;flex-direction:column;gap:8px}
+.cenas-lista button{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:12px 14px;border-radius:16px;background:#fff;border:2px solid transparent;font-size:14px;line-height:1.35;transition:.2s}
+.cenas-lista button b{font-family:var(--t);font-style:italic;color:var(--verde);font-size:18px;flex:none;width:26px}
+.cenas-lista button.on{border-color:var(--verde);background:var(--menta-2)}
+.play-ctrl{display:flex;gap:10px;margin-top:14px;align-items:center;font-size:14px;color:var(--cinza);font-weight:700}
+
+/* Guia do DG */
+.guia{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:30px}
+.guia .bx{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:22px}
+.guia h4{font-style:italic;font-weight:800;color:var(--verde);font-size:20px;margin-bottom:12px}
+.cores{display:flex;flex-wrap:wrap;gap:8px}
+.cores span{width:58px;font-size:10.5px;color:#cfeec0;text-align:center;font-weight:700}
+.cores i{display:block;height:46px;border-radius:12px;margin-bottom:4px;border:1px solid rgba(255,255,255,.2)}
+.guia ul{list-style:none;font-size:14.5px;color:#d9f0cf}
+.guia li{padding:5px 0 5px 22px;position:relative}
+.guia li::before{content:"";position:absolute;left:0;top:12px;width:10px;height:10px;border-radius:0 100% 0 100%;background:var(--verde)}
+.ilu-grade{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.elenco-bx{grid-column:1/-1}
+.elenco-bx .fig{background:#F5F7F2;border-radius:18px;padding:10px 10px 0;margin-top:6px}
+.ilu-grade div{background:#fff;border-radius:14px;aspect-ratio:1;padding:6px}
+
+/* Encerramento */
+.fim{background:var(--verde-esc);color:#fff;padding:110px 0 130px;overflow:hidden;text-align:center}
+.fim .trofeu{width:220px;margin:0 auto 20px}
+.fim h2{font-style:italic;font-weight:900;font-size:clamp(36px,5vw,60px);color:var(--verde)}
+.fim p{max-width:720px;margin:16px auto 0;color:#d9f0cf;font-size:18px}
+.fim .destaque-fim{background:rgba(255,255,255,.08);border-left:6px solid var(--verde);padding:20px 26px;border-radius:0 20px 20px 0;max-width:760px;margin:30px auto;text-align:left;font-weight:700}
+.rodape{background:var(--verde-noite);color:#8fbf9f;font-size:13px;padding:22px 0}
+.rodape .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.rodape img{height:18px;width:auto}
+
+/* Notas de revisão (modo interno) */
+.nota{display:none;margin:14px 0;background:#FFF7D6;border:1.5px solid #E8C547;color:#5b4a00;border-radius:14px;padding:10px 14px;font-size:13.5px;line-height:1.45}
+.nota b{color:#3d3200}
+body.rev .nota{display:block}
+.pend{border-bottom:2px dotted transparent}
+body.rev .pend{background:#FFF1B0;border-bottom-color:#E8C547;border-radius:4px;padding:0 2px}
+
+/* Aparecer ao rolar */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.vis{opacity:1;transform:none}
+
+/* Responsivo */
+@media (max-width:900px){
+  .capa .wrap,.apres,.mod-abre .grid,.duas,.pilares,.story,.situ{grid-template-columns:1fr}
+  .capa{padding-top:100px}
+  .capa h1{font-size:clamp(38px,11vw,60px)}
+  .capa .folha{display:none}
+  .capa .rolar{display:none}
+  .capa .ilu{width:100%;max-width:420px;margin:0 auto}
+  .mod-abre .ilu-mod{width:100%}
+  .combo .pers{width:34%;left:-3%}
+  .ex-cab{flex-direction:column;align-items:stretch}
+  .ex-cab .ex-foto{align-self:flex-start}
+  #rFim{transform:translateX(-100%)!important;top:76px}
+  .carro .slide{grid-template-columns:1fr}
+  .carro .slide svg{max-width:150px}
+  .lados,.canais{grid-template-columns:1fr}
+  .quiz{grid-template-columns:1fr 1fr}
+  .passos{grid-template-columns:1fr 1fr}
+  .campos{grid-template-columns:1fr}
+  .mod-abre .ilu-mod{max-width:360px}
+  .trilha{aspect-ratio:auto;height:auto;display:flex;flex-direction:column;gap:22px;padding-left:20px}
+  .trilha svg.caminho{display:none}
+  .parada{position:static;transform:none;flex-direction:row;width:auto;text-align:left}
+  .parada .dica{display:none}
+  .roda{max-width:300px;margin:0 auto}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .sec{padding:70px 0}
+  .wrap{padding:0 16px}
+  .quiz{grid-template-columns:1fr}
+  .topo .chip-rev span{display:none}
+  .btn-mapa span{display:none}
+  .btn-mapa{padding:9px 12px}
+  .carro{padding:26px}
+  .mod-num{font-size:90px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ================= BARRA SUPERIOR ================= -->
+<div class="topo">
+  <img src="assets/MAP08_logos-Sicredi-Mapfre.png" alt="Sicredi e Mapfre">
+  <div class="acoes">
+    <button class="btn-mapa" id="abreMapa" aria-label="Abrir mapa da jornada">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>
+      <span>Minha jornada</span>
+    </button>
+  </div>
+</div>
+<div class="progresso" id="progresso"></div>
+
+<!-- ================= GAVETA (MENU INTERATIVO) ================= -->
+<div class="veu" id="veu"></div>
+<aside class="gaveta" id="gaveta" aria-label="Mapa da jornada">
+  <header>
+    <button class="fechar" id="fechaMapa" aria-label="Fechar">×</button>
+    <h3>Minha jornada</h3>
+    <p><span id="gProg">0 de 7</span> módulos concluídos</p>
+    <svg class="onda" viewBox="0 0 440 46" preserveAspectRatio="none"><path d="M0 30 C110 0 220 50 330 22 S440 18 440 18 V46 H0Z" fill="#F5F7F2"/></svg>
+  </header>
+  <div class="lista" id="gLista"></div>
+  <div class="g-rodape"><span>Os módulos são liberados em sequência.</span><button id="liberaTudo" hidden>Liberar todos (revisão)</button></div>
+</aside>
+
+<!-- ================= CAPA ================= -->
+<section class="capa" id="inicio">
+  <span class="folha flutua" style="top:18%;left:6%"></span>
+  <span class="folha flutua" style="top:70%;left:44%;animation-delay:-2s;background:#9be27a"></span>
+  <span class="folha flutua" style="top:24%;right:5%;animation-delay:-4s;transform:scale(.7)"></span>
+  <div class="wrap">
+    <div>
+      <div class="selo"><i></i> Treinamento | Seguro Prestamista</div>
+      <h1><span>Seguro</span>Tranquilidade Financeira</h1>
+      <p>Uma jornada para entender, ofertar e operacionalizar o seguro que protege o associado, a família e a cooperativa.</p>
+      <a class="btn" href="#apresentacao">Começar a jornada
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="ilu combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F01_Familia-Campo.jpg" alt="Família no campo"></div><div class="pers dir" data-pers="P02"></div><div class="selo-esc" style="left:4%;right:auto" data-ilu="escudo-branco"></div></div>
+  </div>
+  <div class="rolar"><svg width="22" height="34" viewBox="0 0 22 34" fill="none" stroke="#bfe6ad" stroke-width="2"><rect x="1" y="1" width="20" height="32" rx="10"/><path d="M11 8v7"/></svg>Role para iniciar</div>
+  <svg class="onda-base" viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0 70 C240 10 460 120 760 70 S1220 10 1440 60 V110 H0Z" fill="#62C633"/><path d="M0 92 C300 40 560 120 860 86 S1260 50 1440 82 V110 H0Z" fill="#fff"/></svg>
+</section>
+
+<!-- ================= APRESENTAÇÃO ================= -->
+<section class="sec" id="apresentacao">
+  <div class="wrap apres">
+    <div class="rv">
+      <div class="sub">Apresentação</div>
+      <h2 class="tit">Olá! Boas-vindas ao treinamento</h2>
+      <p class="lead" style="margin-top:18px">Prepare-se para uma jornada de aprendizado muito importante. Aqui, vamos desvendar todos os detalhes do produto Tranquilidade Financeira: uma opção que faz a diferença real na vida das pessoas.</p>
+      <p class="lead">Pegue seu café, acomode-se na cadeira e vamos juntos!</p>
+      <div style="max-width:300px;margin-top:20px" data-ilu="cafe"></div>
+    </div>
+    <div class="rv">
+      <p style="font-weight:800;color:var(--verde-esc)">Clique nas abas para ver mais informações.</p>
+      <div class="abas-nav" role="tablist">
+        <button class="on" data-aba="a1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Módulos</button>
+        <button data-aba="a2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>Duração</button>
+        <button data-aba="a3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Atividades</button>
+      </div>
+      <div class="aba-painel on" id="a1">
+        <p style="margin-bottom:12px">Nosso treinamento está organizado em sete módulos:</p>
+        <div class="mods-mini" id="modsMini"></div>
+      </div>
+      <div class="aba-painel" id="a2">
+        <div class="cartao-info"><div class="big">30<small style="font-size:22px"> min</small></div><p>Este curso terá a duração de, aproximadamente, 30 minutos.</p></div>
+      </div>
+      <div class="aba-painel" id="a3">
+        <div class="cartao-info"><div style="width:110px;flex:none" data-ilu="alvo"></div><p>Ao longo dos módulos, você poderá testar seus conhecimentos com algumas atividades! Fique atento(a) e dê o seu melhor!</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAPA DA JORNADA (MENU INTERATIVO NA PÁGINA) ================= -->
+<section class="mapa" id="mapa">
+  <div class="wrap">
+    <div class="cab rv">
+      <div>
+        <div class="sub" style="color:var(--verde)">Módulos de conteúdo</div>
+        <h2 class="tit">Sua trilha de aprendizado</h2>
+        <p class="lead" style="margin-top:12px" id="mapaMsg">Vamos começar? Então, clique sobre o “Módulo 1”!</p>
+      </div>
+    </div>
+    <div class="trilha rv" id="trilha">
+      <svg class="caminho" viewBox="0 0 1100 420" preserveAspectRatio="none">
+        <path id="trilhaPath" d="M70 330 C180 330 190 110 330 110 S470 320 600 300 S720 90 830 110 S960 330 1040 300" fill="none" stroke="#0B4424" stroke-width="26" stroke-linecap="round"/>
+        <path d="M70 330 C180 330 190 110 330 110 S470 320 600 300 S720 90 830 110 S960 330 1040 300" fill="none" stroke="#62C633" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
+        <path id="trilhaFeita" d="M70 330 C180 330 190 110 330 110 S470 320 600 300 S720 90 830 110 S960 330 1040 300" fill="none" stroke="#62C633" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 4000" style="transition:stroke-dasharray 1s"/>
+      </svg>
+    </div>
+    <div class="legenda"><span><i style="background:#62C633"></i>Próximo módulo</span><span><i style="background:#0B4424;border:1px solid #62C633"></i>Concluído</span><span><i style="background:#2a7a4a"></i>Bloqueado</span></div>
+  </div>
+  <svg class="onda-base" viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0 60 C300 110 620 20 900 60 S1300 100 1440 50 V110 H0Z" fill="#F5F7F2"/></svg>
+</section>
+
+<!-- ================= MÓDULO 1 (COMPLETO) ================= -->
+<section class="modulo" id="mod1" data-mod="1">
+  <div class="mod-abre">
+    <div class="wrap grid">
+      <div class="txt rv">
+        <div class="mod-num">01</div>
+        <h2 class="tit">O que é o “Tranquilidade Financeira”?</h2>
+        <p class="lead">Vamos responder a essa e outras perguntas neste módulo! Clique em continuar para explorar o conteúdo.</p>
+        <div style="margin-top:24px"><a class="btn esc" href="#m1-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      </div>
+      <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F14_Produtora-Tablet.jpg" alt=""></div><div class="pers" data-pers="P01"></div></div>
+    </div>
+  </div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m1-conteudo">
+      <div class="wrap">
+        <div class="sub rv">Módulo 1</div>
+        <h2 class="tit rv">O que é o “Tranquilidade Financeira”?</h2>
+        <p class="lead rv" style="margin:14px 0 28px">Que tal iniciarmos definindo esse importante produto do nosso portfólio? Acompanhe a seguir a explicação:</p>
+
+        <div class="carro rv" id="carro1">
+          <div class="janela"><div class="trilho">
+            <div class="slide"><div data-ilu="contrato"></div><p>O Tranquilidade Financeira é um seguro do tipo <b style="color:var(--verde)">Prestamista</b>. O que isso significa na prática? Significa que ele é um seguro que <b style="color:var(--verde)">acompanha operações de crédito</b>.</p></div>
+            <div class="slide"><div data-ilu="escudo2"></div><p>O grande objetivo dele é garantir, como o próprio nome já diz, a <span class="pend">tranquilidade em dose dupla</span>: tanto para o nosso <b style="color:var(--verde)">associado</b> quanto para a nossa <b style="color:var(--verde)">cooperativa</b>.</p></div>
+          </div></div>
+          <div class="ctrl"><button class="seta" data-dir="-1" aria-label="Anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button class="seta" data-dir="1" aria-label="Próximo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button><div class="dots"></div></div>
+        </div>
+
+        <div class="duas" style="margin-top:56px">
+          <div class="rv">
+            <p>Como bem sabemos, a contratação de um crédito costuma marcar um momento importante na vida do nosso associado: a realização de um sonho, a compra de um veículo ou de um imóvel, ou até mesmo o apoio financeiro em uma situação de necessidade. E é justamente por isso que <span class="dest">proteger essa operação faz toda a diferença</span>.</p>
+            <p>Imagine que a vida é cheia de imprevistos, e um dos mais difíceis de lidar é o falecimento. Em um momento delicado como esse, o seguro entra em ação para <span class="dest">quitar ou reduzir a dívida</span> que o associado tinha em aberto.</p>
+          </div>
+          <div class="rv" data-ilu="sonhos"></div>
+        </div>
+
+        <h3 class="rv" style="font-size:28px;font-style:italic;font-weight:900;color:var(--verde-esc);margin-top:56px">E sabe qual o resultado disso?</h3>
+        <p class="rv" style="color:var(--cinza)">Toque em cada lado para descobrir.</p>
+        <div class="lados rv">
+          <div class="lado" tabindex="0">
+            <div class="foto-l"><img src="assets/fotos/MAP08_M01_IMG-F01_Familia-Campo.jpg" alt="Família no campo"></div>
+            <h4>Para o associado</h4>
+            <p>A família não precisa usar o patrimônio deixado para arcar com a dívida.</p>
+            <div class="abrir">Saiba mais <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+            <div class="mais"><p style="margin-top:12px">Com o “Tranquilidade Financeira”, a família não precisa utilizar o patrimônio deixado para arcar com essa obrigação financeira. Afinal, de acordo com o Código Civil (art. 796), as dívidas do falecido podem ser quitadas com os bens da herança, reduzindo o patrimônio destinado aos herdeiros.</p><p>Dessa forma, esse impacto pode ser evitado. O seguro protege o patrimônio da família, oferece mais tranquilidade em um momento delicado e garante mais segurança para todos os envolvidos.</p></div>
+          </div>
+          <div class="lado" tabindex="0">
+            <div class="foto-l"><img src="assets/fotos/MAP08_M01_IMG-F02_Gerente-Agencia.jpg" alt="Gerente atendendo associada"></div>
+            <h4>Para o Sicredi</h4>
+            <p>Menos risco nas operações de crédito e uma cooperativa mais forte.</p>
+            <div class="abrir">Saiba mais <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+            <div class="mais"><p style="margin-top:12px">Ao reduzir os riscos das operações de crédito, ele também fortalece a saúde financeira da cooperativa e contribui para resultados mais sustentáveis.</p><p>Isso ajuda a manter a estrutura funcionando, fortalece programas de reconhecimento como o PPR e permite que o Sicredi continue investindo no relacionamento com seus associados.</p></div>
+          </div>
+        </div>
+
+        <div class="destaque rv"><svg viewBox="0 0 60 60" fill="none"><path d="M30 6 50 13v15c0 13-9 22-20 26C19 50 10 41 10 28V13Z" fill="#fff" stroke="#0B4424" stroke-width="3" stroke-linejoin="round"/><path d="M21 30l7 7 12-14" stroke="#0B4424" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><div>No fim das contas, oferecer esse seguro é uma forma de cuidar de quem contrata o crédito e, ao mesmo tempo, contribuir para o crescimento da cooperativa e da comunidade onde ela está presente. É o verdadeiro cenário onde todo mundo sai protegido e amparado!</div></div>
+
+        <div class="sub rv" style="margin-top:60px">Reforçando conceitos…</div>
+        <div class="situ rv">
+          <div class="foto-org" style="aspect-ratio:1"><img src="assets/fotos/MAP08_M01_IMG-F03_Maos-Apoio.jpg" alt="Mãos dadas em apoio"></div>
+          <div>
+            <p style="font-weight:700;color:var(--cinza)">Pense na seguinte situação:</p>
+            <div class="balao" style="margin:10px 0 14px">Um associado <span class="pend">falece ou fica em invalidez permanente</span> enquanto ainda possui uma operação de crédito em andamento com o Sicredi.</div>
+            <p style="font-weight:800;font-size:20px;color:var(--verde-esc)">Como o Tranquilidade Financeira ajuda nesse momento?</p>
+          </div>
+        </div>
+        <div class="flips">
+          <div class="flip rv" tabindex="0"><div class="in"><div class="f"><div data-ilu="ico-familia" style="width:110px"></div><h4>Família</h4><small>Toque para virar ↻</small></div><div class="v"><span class="pend">Evita que a dívida recaia sobre os herdeiros ou comprometa o patrimônio.</span></div></div></div>
+          <div class="flip rv" tabindex="0"><div class="in"><div class="f"><div data-ilu="ico-coop" style="width:110px"></div><h4>Cooperativa</h4><small>Toque para virar ↻</small></div><div class="v">Reduz o risco de inadimplência e de perdas financeiras.</div></div></div>
+        </div>
+
+        <div class="fim-mod"><button class="btn esc" data-concluir="1">Concluir módulo 1 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MÓDULOS 2–7 ================= -->
+<!-- M2 -->
+<section class="modulo" id="mod2" data-mod="2">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">02</div><h2 class="tit">A parceria de sucesso: por que escolher a Mapfre?</h2><p class="lead">Neste segundo módulo, falaremos sobre os motivos pelos quais a nossa parceria Sicredi - Mapfre faz tanto sentido! Clique em Continuar para aprofundar seu entendimento!</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m2-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F04_Produtor-Laptop.jpg" alt="Produtor no campo com notebook"></div><div class="pers dir" data-pers="P09"></div></div>
+  </div></div>
+  <div class="mod-conteudo"><div class="sec" id="m2-conteudo">
+    <div class="wrap">
+      <div class="sub">Módulo 2</div>
+      <h2 class="tit">A parceria de sucesso: por que escolher a Mapfre?</h2>
+      <p class="lead" style="margin-top:14px">A parceria entre Sicredi e Mapfre fortalece o Seguro Tranquilidade Financeira ao combinar uma seguradora sólida, processos mais simples e uma operação preparada para crescer.</p>
+      <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><path d="M30 6 50 13v15c0 13-9 22-20 26C19 50 10 41 10 28V13Z" fill="#fff" stroke="#0B4424" stroke-width="3" stroke-linejoin="round"/><path d="M21 30l7 7 12-14" stroke="#0B4424" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Assim, cada contratação gera benefícios para todos os envolvidos: o associado conta com uma proteção confiável, enquanto a cooperativa fortalece seus resultados e sua capacidade de continuar oferecendo um atendimento de excelência.</div></div>
+      <h3 class="subt">Além disso, ao contarmos com a Mapfre, contamos também com:</h3>
+      <div class="painel pilares">
+        <div class="roda" id="roda"><div class="centro" data-ilu="escudo-branco"></div></div>
+        <div class="pilar-txt" id="pilarTxt"></div>
+      </div>
+
+      <div class="sub" style="margin-top:60px">Reforçando conceitos…</div>
+      <div class="situ">
+        <div class="situ-pers" data-pers="P07"></div>
+        <div>
+          <p style="font-weight:700;color:var(--cinza)">Pense na seguinte situação. Imagine que um associado pergunta:</p>
+          <div class="balao" style="margin:10px 0 14px">“Por que eu posso confiar nesse seguro?”</div>
+          <p style="font-weight:800;font-size:20px;color:var(--verde-esc)">Com base no que você aprendeu, qual resposta faz mais sentido?</p>
+        </div>
+      </div>
+      <div class="quiz quizg">
+        <button class="alt" data-c="0" data-fb="Ops, na realidade, não. O Tranquilidade Financeira não reduz o valor da operação de crédito. Seu principal objetivo é oferecer proteção financeira ao associado e à sua família em caso de imprevistos, garantindo mais segurança durante toda a vigência do contrato."><span class="letra">A</span><p>Porque o seguro oferece descontos nas operações de crédito.</p><span class="escolher">Escolher essa</span></button>
+        <button class="alt" data-c="1" data-fb="Isso mesmo! A parceria entre Sicredi e Mapfre reúne uma seguradora sólida, processos ágeis e uma equipe especializada. Essa combinação transmite mais confiança ao associado e fortalece toda a operação, garantindo uma experiência mais segura e eficiente."><span class="letra">B</span><p>Porque ele conta com uma seguradora sólida, processos simples e uma estrutura preparada para oferecer proteção e suporte quando o associado precisar.</p><span class="escolher">Escolher essa</span></button>
+        <button class="alt" data-c="0" data-fb="Na verdade, não. A parceria com a Mapfre simplifica processos e amplia a capacidade de atendimento, mas isso não significa que todas as operações sejam aprovadas automaticamente. As análises e critérios de contratação continuam sendo respeitados."><span class="letra">C</span><p>Porque qualquer operação de crédito é automaticamente aprovada.</p><span class="escolher">Escolher essa</span></button>
+        <button class="alt" data-c="0" data-fb="Quase! A contratação é mais simples e ágil, mas isso não elimina as análises necessárias. Dependendo da idade do associado e do capital segurado, por exemplo, ainda pode ser exigida a Declaração Pessoal de Saúde (DPS) e outros critérios previstos para a contratação."><span class="letra">D</span><p>Porque a contratação dispensa qualquer análise.</p><span class="escolher">Escolher essa</span></button>
+      </div>
+      <div class="feedback fbg"><svg class="ic-ok" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-x" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff"/><path d="M21 21l18 18M39 21 21 39" stroke="#8a3b2e" stroke-width="5" stroke-linecap="round"/></svg><div><b class="fbtit" style="font-size:19px"></b><p class="fbt" style="margin-top:4px"></p></div></div>
+      <div class="fim-mod"><button class="btn esc" data-concluir="2">Concluir módulo 2 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- M3 -->
+<section class="modulo" id="mod3" data-mod="3">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">03</div><h2 class="tit">Qual o impacto na vida das pessoas?</h2><p class="lead">Até aqui, entendemos o que é o Tranquilidade Financeira e por que ele é tão importante para o associado e para a cooperativa. Agora, chegou a hora de responder a uma pergunta muito comum: <b>“Mas, na prática, qual é o impacto desse seguro na vida das pessoas?”</b></p>
+      <p class="lead">Neste módulo, vamos analisar situações que mostram exatamente como o Seguro Prestamista protege o patrimônio da família e quais regras devemos observar na contratação.</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m3-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod combo esc"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F05_Agricultor-Trigo.jpg" alt="Agricultor com notebook no campo de trigo"></div><div class="pers" data-pers="P05"></div></div>
+  </div></div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m3-conteudo">
+      <div class="wrap">
+        <div class="sub">Módulo 3</div>
+        <h2 class="tit">Vamos imaginar um exemplo bastante simples</h2>
+        <p class="lead" style="margin-top:10px">Compare os dois cenários: sem o seguro e com o seguro. Você também pode mover os controles para testar outros valores.</p>
+        <div class="painel duas">
+          <div class="sim-controles">
+            <div class="foto-cena"><img id="fotoHer" src="assets/fotos/MAP08_M01_IMG-F07_Mae-Filho-Rural.jpg" alt=""><span id="fotoHerTxt">Com o seguro</span></div>
+            <label>Patrimônio deixado <span class="val" id="vPat">R$ 50 mil</span></label>
+            <input type="range" id="rPat" min="10000" max="300000" step="5000" value="50000">
+            <label>Dívida da operação de crédito <span class="val" id="vDiv">R$ 30 mil</span></label>
+            <input type="range" id="rDiv" min="0" max="300000" step="5000" value="30000">
+            <div class="alterna" id="altSeg"><button class="sem" data-s="0">Sem o seguro</button><button class="on" data-s="1">Com o seguro</button></div>
+            <div class="resultado" id="resHer"></div>
+          </div>
+          <div>
+            <div class="barras">
+              <div class="barra"><span class="v" id="bPatV"></span><div class="col" id="bPat" style="background:var(--menta);border:3px solid var(--verde-esc);border-bottom:0"></div><small>Patrimônio</small></div>
+              <div class="barra"><span class="v" id="bDivV"></span><div class="col" id="bDiv" style="background:#e9a598"></div><small id="bDivL">Dívida paga<br>com a herança</small></div>
+              <div class="barra"><span class="v" id="bHerV"></span><div class="col" id="bHer" style="background:var(--verde)"></div><small>Herança para<br>a família</small></div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:22px;font-weight:800;color:var(--verde-esc)">É exatamente isso que significa proteger o patrimônio da família.</p>
+        <p style="margin-top:22px">Existe um ponto muito importante que merece atenção.</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="24" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M30 17v17" stroke="#0B4424" stroke-width="5" stroke-linecap="round"/><circle cx="30" cy="43" r="3.2" fill="#0B4424"/></svg><div>Quando o valor dos bens deixados é igual ou até menor que o valor das dívidas, não existe herança a ser deixada. Todo o patrimônio será utilizado para quitar as pendências financeiras, e os herdeiros não receberão nenhum valor excedente.</div></div>
+        <p>O Seguro Tranquilidade Financeira existe justamente para evitar essa situação, protegendo o patrimônio construído pelo associado e oferecendo mais tranquilidade financeira para quem fica. Junto disso, ele garante proteção imediata às operações de crédito do Sicredi, assegurando a amortização total ou parcial da dívida contratada em caso de imprevistos cobertos.</p>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <h2 class="tit">Quem pode contratar?</h2>
+        <p class="lead" style="margin-top:10px">O Tranquilidade Financeira foi desenvolvido para atender às necessidades dos nossos associados. Dessa forma, ele contempla a contratação de Pessoa Física e Pessoa Jurídica, com idade entre 14 e 80 anos.</p>
+        <p class="lead">Após a contratação e aceitação pela seguradora, o seguro entra em vigência. Sem carência, nem franquia!</p>
+        <p class="lead">Mas existe uma regra muito importante! O limite não considera apenas a idade atual do associado. Acompanhe isso na prática, a partir dos exemplos a seguir:</p>
+        <div class="painel">
+          <div class="alterna" id="altEx" style="max-width:420px;margin-top:0"><button class="on" data-e="0">Exemplo 1</button><button data-e="1">Exemplo 2</button></div>
+          <div class="ex-cab"><div class="ex-foto"><img id="fotoEx" src="assets/fotos/MAP08_M01_IMG-F08_Idoso-Banco.jpg" alt=""></div><div class="ficha" id="fichaEx"></div></div>
+          <div class="regua" id="regua"><div class="base"></div><div class="op" id="rOp"></div><div class="lim" id="rLim"><span>81 anos</span></div><div class="marca" id="rIni" style="transform:translateX(calc(-100% - 6px))"></div><div class="marca" id="rFim" style="transform:translateX(6px)"></div></div>
+          <div class="resultado" id="resEx" style="margin-top:34px"></div>
+        </div>
+        <p style="margin-top:26px">A regra que você precisa guardar é muito simples:</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><rect x="10" y="12" width="40" height="38" rx="6" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M10 22h40M20 8v8M40 8v8" stroke="#0B4424" stroke-width="3" stroke-linecap="round"/><path d="M22 36l6 6 10-12" stroke="#0B4424" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>O associado não poderá contratar o Tranquilidade Financeira se, no momento da contratação do seguro, o prazo da operação fizer com que ele ultrapasse o limite de 81 anos de idade.</div></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="wrap">
+        <div class="sub">Reforçando conceitos…</div>
+        <p class="lead">Imagine dois associados que possuem exatamente o mesmo patrimônio e a mesma dívida. Um deles contratou o Tranquilidade Financeira e o outro não.</p>
+        <h2 class="tit" style="font-size:clamp(24px,3vw,34px);margin-top:10px">Qual é a principal diferença entre esses dois cenários em caso de falecimento do associado?</h2>
+        <p style="margin-top:8px;color:var(--cinza);font-weight:700">Clique no botão com a alternativa correta!</p>
+        <div class="quiz" id="quiz3"></div>
+        <div class="feedback" id="fb3"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b style="font-size:19px">Feedback da questão</b><p style="margin-top:4px">Quem contrata o seguro Tranquilidade Financeira consegue proteger o patrimônio da família ao quitar ou amortizar a dívida da operação de crédito, conforme as coberturas previstas. Dessa forma, o seguro não aumenta o valor da herança, nem reduz o valor das parcelas da operação de crédito.</p></div></div>
+        <div class="fim-mod"><button class="btn esc" data-concluir="3">Concluir módulo 3 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M4 -->
+<section class="modulo" id="mod4" data-mod="4">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">04</div><h2 class="tit">Quais são as “regras do jogo”?</h2><p class="lead">Agora que entendemos como o Tranquilidade Financeira protege o patrimônio dos nossos associados, vamos conhecer algumas regras importantes para a contratação.</p><p class="lead">Pode ficar tranquilo(a): apesar de parecer um assunto mais técnico, os conceitos são bastante simples. Vamos lá! Clique em “Continuar” para compreender tudo sobre esse assunto.</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m4-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod" data-ilu="regras"></div>
+  </div></div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m4-conteudo">
+      <div class="wrap">
+        <div class="sub">Módulo 4</div>
+        <h2 class="tit">O que é o capital segurado?</h2>
+        <p class="lead" style="margin:14px 0 28px">Sempre que contratamos um seguro, existe um limite máximo de cobertura. É isso que chamamos de capital segurado. No Tranquilidade Financeira, esse limite varia de acordo com a idade do segurado.</p>
+        <div class="carro">
+          <div class="janela"><div class="trilho">
+            <div class="slide"><div><img src="assets/personagens/MAP08_M01_IMG-P01_Produtor.webp" alt="" style="max-height:230px;width:auto;margin:0 auto"></div><p>Para segurados com <b style="color:var(--verde)">até 65 anos</b>, o limite de capital segurado por CPF pode chegar a <b style="color:var(--verde)">R$ 4 milhões</b>.</p></div>
+            <div class="slide"><div><img src="assets/personagens/MAP08_M01_IMG-P03_Idoso-Produtor.webp" alt="" style="max-height:230px;width:auto;margin:0 auto"></div><p>Para segurados com <b style="color:var(--verde)">mais de 65 anos</b>, o capital segurado máximo é de <b style="color:var(--verde)">R$ 400 mil</b>.</p></div>
+          </div></div>
+          <div class="ctrl"><button class="seta" data-dir="-1" aria-label="Anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button class="seta" data-dir="1" aria-label="Próximo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button><div class="dots"></div></div>
+        </div>
+        <p style="margin-top:22px">Esses limites permitem atender desde operações menores até operações de crédito de maior valor, sempre respeitando as regras do produto.</p>
+
+        <h3 class="subt">As modalidades de contratação</h3>
+        <p>Vamos entender a diferença entre elas agora!</p>
+        <div class="painel duas">
+          <div>
+            <div class="alterna" id="altMod" style="margin-top:0"><button class="on" data-m="v">Capital Vinculado</button><button data-m="f">Capital Fixo</button></div>
+            <div id="modTxt" style="margin-top:18px"></div>
+          </div>
+          <svg class="grafico" id="graf" viewBox="0 0 460 300"></svg>
+        </div>
+        <p style="margin-top:26px">Mas existe um detalhe importante.</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="24" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M20 34l7-8 6 5 8-10" stroke="#0B4424" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>Na modalidade de Capital Fixo, o capital segurado recebe atualização monetária anual, sem cobrança de prêmio adicional ao associado. Ou seja, o valor segurado é atualizado automaticamente, sem aumento no custo do seguro por esse motivo.</div></div>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <h2 class="tit">Regra específica para Pessoa Jurídica</h2>
+        <div class="txt-img">
+          <div><p class="lead">Quando a contratação acontece para uma Pessoa Jurídica, existe uma regra específica:</p>
+            <div class="balao" style="margin-top:14px">Nesse caso, haverá cobertura apenas para um dos sócios. Esse sócio deve ser exatamente aquele indicado no momento da contratação da operação.</div></div>
+          <div data-pers="P04"></div>
+        </div>
+
+        <div class="sub" style="margin-top:60px">Reforçando conceitos…</div>
+        <p class="lead">Um associado deseja contratar o Tranquilidade Financeira e pergunta qual é a diferença entre as modalidades Capital Fixo e Capital Vinculado.</p>
+        <h2 class="tit" style="font-size:clamp(24px,3vw,34px);margin-top:10px">Com base no que você aprendeu, qual alternativa está correta?</h2>
+        <div class="quiz quizg dois">
+          <button class="alt" data-c="1" data-fb="Muito bem! No Capital Vinculado, o valor da cobertura acompanha o saldo devedor da operação de crédito. À medida que a dívida é reduzida, a cobertura também é atualizada, e o pagamento do prêmio considera essa evolução."><span class="letra">A</span><p>No Capital Vinculado, o valor da cobertura acompanha a atualização do saldo devedor da operação de crédito.</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="0" data-fb="Não é isso. No Capital Fixo, a cobertura não acompanha a redução do saldo devedor. Além disso, o capital segurado recebe atualização monetária anual, sem cobrança de prêmio adicional."><span class="letra">B</span><p>No Capital Fixo, o valor da cobertura diminui conforme o associado paga as parcelas do financiamento.</p><span class="escolher">Escolher essa</span></button>
+        </div>
+        <div class="feedback fbg"><svg class="ic-ok" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-x" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff"/><path d="M21 21l18 18M39 21 21 39" stroke="#8a3b2e" stroke-width="5" stroke-linecap="round"/></svg><div><b class="fbtit" style="font-size:19px"></b><p class="fbt" style="margin-top:4px"></p></div></div>
+        <div class="fim-mod"><button class="btn esc" data-concluir="4">Concluir módulo 4 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M5 -->
+<section class="modulo" id="mod5" data-mod="5">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">05</div><h2 class="tit">Como fazer a DPS e oferecer o seguro?</h2><p class="lead">Quando falamos em contratação de seguros, um assunto costuma gerar dúvidas: a Declaração Pessoal de Saúde, ou simplesmente DPS. Mas pode ficar tranquilo. No Tranquilidade Financeira, as regras são objetivas e o processo é muito mais simples do que parece.</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m5-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F10_Agronomo-Tablet.jpg" alt="Agrônomo com tablet no milharal"></div><div class="pers dir" data-pers="P08"></div></div>
+  </div></div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m5-conteudo">
+      <div class="wrap">
+        <div class="sub">Módulo 5</div>
+        <div class="destaque" style="margin-top:6px"><svg viewBox="0 0 60 60" fill="none"><rect x="14" y="8" width="32" height="44" rx="5" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M21 20h18M21 28h18M21 36h11" stroke="#0B4424" stroke-width="3" stroke-linecap="round"/></svg><div>Neste módulo, vamos entender quando a DPS é necessária, como funciona a contratação do seguro e o que acontece até a conclusão da adesão.</div></div>
+        <h2 class="tit">O que é a DPS e quando ela é necessária?</h2>
+        <p class="lead" style="margin-top:12px">A Declaração Pessoal de Saúde é um documento utilizado em algumas contratações para que a seguradora possa avaliar o risco da operação.</p>
+        <p class="lead">Mas atenção: nem toda contratação exige o preenchimento da DPS. Vamos entender essas regras que estipulam quando a DPS é necessária:</p>
+        <div class="cards-lim">
+          <div class="card-lim"><h4>Associados com até 65 anos</h4><div class="l"><span>Sem DPS</span><b>Capitais de até R$ 250 mil</b></div><div class="l"><span>Com DPS</span><b>Acima de R$ 250 mil, até o limite de R$ 4 milhões</b></div></div>
+          <div class="card-lim"><h4>Associados com mais de 65 anos</h4><div class="l"><span>Sem DPS</span><b>Capitais de até R$ 100 mil</b></div><div class="l"><span>Com DPS</span><b>Acima de R$ 100 mil, até o limite de R$ 400 mil</b></div></div>
+        </div>
+        <p style="margin-top:22px">Em resumo, basta estar atento a esses dois critérios (idade e capital segurado) para saber se será necessário preencher a declaração. Teste você mesmo:</p>
+        <div class="painel duas">
+          <div class="sim-controles">
+            <div class="alterna" id="altIdade" style="margin-top:0"><button class="on" data-i="a">Até 65 anos</button><button data-i="b">Acima de 65 anos</button></div>
+            <label>Capital segurado <span class="val" id="vCap"></span></label>
+            <input type="range" id="rCap" min="0" max="1000" step="1" value="200">
+          </div>
+          <div class="dps-res" id="dpsRes" style="margin-top:0"><div class="ico" id="dpsIco"></div><div><h4 id="dpsTit"></h4><p id="dpsTxt"></p></div></div>
+        </div>
+
+        <h3 class="subt">Como preencher a DPS?</h3>
+        <div class="txt-img">
+          <div><p>Se você imaginou um processo cheio de formulários e assinaturas, pode esquecer essa ideia.</p>
+            <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><rect x="8" y="12" width="44" height="30" rx="4" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M4 48h52" stroke="#0B4424" stroke-width="3" stroke-linecap="round"/><path d="M22 27l6 6 11-12" stroke="#0B4424" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>O preenchimento da DPS é 100% digital e não exige assinatura física.</div></div>
+            <p>As informações são enviadas diretamente para a seguradora por meio de integração via API, tornando o processo mais rápido, seguro e prático para todos.</p></div>
+          <div data-ilu="laptop"></div>
+        </div>
+        <details class="acc"><summary>E se o associado tiver dificuldade?</summary><div class="acc-c"><img src="assets/fotos/MAP08_M01_IMG-F11_Aperto-Maos-Assessor.jpg" alt="Associado e assessor apertando as mãos"><div><p>Nem todos os associados estão acostumados com processos digitais.</p><p>Por isso, caso exista alguma dificuldade durante o preenchimento eletrônico, a proposta também poderá ser assinada fisicamente.</p></div></div></details>
+        <p style="margin-top:22px">O mais importante é garantir que o associado compreenda todo o processo e tenha uma experiência tranquila durante a contratação.</p>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <h2 class="tit">Como o seguro entra na concessão do crédito?</h2>
+        <p class="lead" style="margin-top:12px">Agora que entendemos a DPS, vamos acompanhar o caminho percorrido pelo associado até a contratação do seguro.</p>
+        <div class="fluxo">
+          <div class="et"><b>1. Solicitação</b>Tudo começa quando o associado procura a cooperativa para solicitar uma operação de crédito.</div>
+          <div class="et"><b>2. Oferta</b>Após a aprovação do crédito, o seguro prestamista é ofertado.</div>
+          <div class="et"><b>3. Proposta</b>Com a aceitação do seguro, é gerada a proposta de adesão, vinculada ao crédito: com DPS ou sem DPS, conforme o enquadramento do perfil.</div>
+        </div>
+        <h3 class="subt">Para ofertar corretamente o seguro, siga os passos a seguir:</h3>
+        <p style="color:var(--cinza)">Clique em cada passo para marcá-lo.</p>
+        <div class="passos" id="passos"></div>
+        <div class="resultado" id="resPassos" style="margin-top:22px">Marque os cinco passos.</div>
+        <p style="margin-top:22px">Como vimos, dependendo da idade e do capital segurado, poderá ser necessária a Declaração Pessoal de Saúde (DPS). Quando ela não for exigida, a contratação segue normalmente.</p>
+        <details class="acc"><summary>Como é a cobrança do seguro?</summary><div class="acc-c"><img src="assets/ilustracoes/MAP08_M01_IMG-S06_Calculadora-Sorteio.webp" alt="Calculadora e moedas"><div><p>É importante deixar claro ao associado que a cobrança do seguro acontece separadamente das parcelas do crédito.</p><p>Isso permite que o associado visualize claramente o valor correspondente ao seguro contratado, trazendo mais transparência e facilitando o entendimento da operação.</p></div></div></details>
+
+        <h3 class="subt">E se a proposta for recusada?</h3>
+        <p>Em algumas situações, a proposta pode ser recusada pela Mapfre, ou, ainda, pode ser que seja solicitado documentos e informações adicionais.</p>
+        <div class="carro" style="margin-top:22px">
+          <div class="janela"><div class="trilho">
+            <div class="slide"><div><img src="assets/ilustracoes/MAP08_M01_IMG-S01_Contrato-Escudo.webp" alt="" style="max-height:200px;width:auto;margin:0 auto"></div><p>Caso a Mapfre recuse a operação do seguro, o associado receberá uma comunicação formal, informando o motivo da recusa ou a necessidade de complementação de informações enviadas no ato de adesão inicial.</p></div>
+            <div class="slide"><div><img src="assets/personagens/MAP08_M01_IMG-P09_Parceira-Mapfre.webp" alt="" style="max-height:230px;width:auto;margin:0 auto"></div><p>Se a proposta entrar em análise de subscrição, o prazo de retorno da Mapfre é de até <b style="color:var(--verde)">D+15 dias</b>.</p></div>
+          </div></div>
+          <div class="ctrl"><button class="seta" data-dir="-1" aria-label="Anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><button class="seta" data-dir="1" aria-label="Próximo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button><div class="dots"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="wrap">
+        <div class="sub">Reforçando conceitos…</div>
+        <div class="situ">
+          <div class="situ-pers" data-pers="P03"></div>
+          <div><p class="lead">Durante a contratação de uma operação de crédito, um associado aceita contratar o Tranquilidade Financeira. O capital segurado exige o preenchimento da DPS.</p>
+            <p style="font-weight:800;font-size:20px;color:var(--verde-esc);margin-top:10px">Qual é o próximo passo desse processo?</p></div>
+        </div>
+        <div class="quiz quizg dois">
+          <button class="alt" data-c="0" data-fb="Nem sempre. Quando a contratação exige DPS, a proposta pode passar por análise da seguradora antes da conclusão do processo."><span class="letra">A</span><p>O seguro entra imediatamente em vigor, sem necessidade de qualquer análise.</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="1" data-fb="Correto! Após a aceitação do seguro, é gerada a proposta de adesão e, quando a DPS é necessária, as informações são encaminhadas para análise da MAPFRE."><span class="letra">B</span><p>É gerada a proposta de adesão e, quando aplicável, a DPS é enviada para análise da seguradora.</p><span class="escolher">Escolher essa</span></button>
+        </div>
+        <div class="feedback fbg"><svg class="ic-ok" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-x" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff"/><path d="M21 21l18 18M39 21 21 39" stroke="#8a3b2e" stroke-width="5" stroke-linecap="round"/></svg><div><b class="fbtit" style="font-size:19px"></b><p class="fbt" style="margin-top:4px"></p></div></div>
+        <div class="fim-mod"><button class="btn esc" data-concluir="5">Concluir módulo 5 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M6 -->
+<section class="modulo" id="mod6" data-mod="6">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">06</div><h2 class="tit">Qual o caminho da operacionalização?</h2><p class="lead">Até aqui, vimos como acontece a contratação do Tranquilidade Financeira e entendemos quando a DPS é necessária. Agora, vamos acompanhar o que acontece depois que o seguro é contratado.</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m6-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod combo esc"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F12_Casal-Idoso-Tablet.jpg" alt="Casal de idosos usando tablet"></div><div class="pers" data-pers="P03"></div></div>
+  </div></div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m6-conteudo">
+      <div class="wrap">
+        <div class="sub">Módulo 6</div>
+        <h2 class="tit">Quando a cobertura começa?</h2>
+        <p class="lead" style="margin-top:12px">Uma dúvida bastante comum é sobre o início da vigência do seguro. A regra é simples, veja só:</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><rect x="10" y="12" width="40" height="38" rx="6" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M10 22h40M20 8v8M40 8v8" stroke="#0B4424" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="36" r="7" stroke="#0B4424" stroke-width="3"/><path d="M30 33v3l2 2" stroke="#0B4424" stroke-width="2.5" stroke-linecap="round"/></svg><div>A vigência do Certificado Individual começa conforme a regra prevista para a modalidade contratada e após a aceitação da proposta pela seguradora. Quando o seguro for contratado após a liberação da operação de crédito, será considerada a data da contratação, conforme as condições do produto.</div></div>
+        <p>Existe apenas uma exceção: se o seguro for contratado depois que a operação de crédito já tiver sido liberada, a vigência passa a contar da data da contratação do seguro. Assim, a cobertura sempre acompanha o momento em que a adesão é efetivamente realizada.</p>
+
+        <h3 class="subt">Como funciona o pagamento do prêmio?</h3>
+        <p>Ao contratar o Tranquilidade Financeira, o associado paga um valor correspondente ao seguro. Esse valor é chamado de prêmio. Dependendo da modalidade contratada, esse pagamento pode acontecer de duas formas.</p>
+        <div class="lados" style="margin-top:22px">
+          <div class="lado" tabindex="0"><div class="foto-l"><img src="assets/fotos/MAP08_M01_IMG-F02_Gerente-Agencia.jpg" alt="Atendimento na agência"></div><h4>Cobrança pelo Sicredi</h4><p>A cobrança do pagamento único e do primeiro pagamento mensal será realizada pelo Sicredi.</p></div>
+          <div class="lado" tabindex="0"><div class="foto-l"><img src="assets/fotos/MAP08_M01_IMG-F15_Produtor-Milho.jpg" alt="Produtor no milharal"></div><h4>Cobrança pela Mapfre</h4><p>As demais cobranças do pagamento mensal serão realizadas pela MAPFRE conforme atualização do saldo devedor pelo Sicredi.</p></div>
+        </div>
+        <p style="margin-top:22px">Esse processo garante que a cobrança permaneça alinhada à evolução do financiamento. Mas, e se houver atraso no pagamento? Vamos descobrir o que acontece!</p>
+        <details class="acc"><summary>Casos de inadimplência</summary><div class="acc-c"><img src="assets/personagens/MAP08_M01_IMG-P07_Idosa.webp" alt="" style="max-height:220px;width:auto;margin:0 auto"><div><p>Imprevistos podem acontecer. Por isso, o Certificado Individual oferece um prazo de tolerância para o pagamento dos prêmios mensais. Mesmo em caso de atraso no pagamento do prêmio, a proteção permanece válida por até <b>60 dias</b>.</p><p>Essa regra oferece uma camada extra de segurança ao associado e aos seus beneficiários em situações inesperadas.</p></div></div></details>
+
+        <h3 class="subt">Atualização do capital segurado e cálculo do prêmio</h3>
+        <p>Lembra da modalidade Capital Fixo, que vimos no módulo anterior? Existe uma informação importante sobre ela. Acompanhe:</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="24" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M20 34l7-8 6 5 8-10" stroke="#0B4424" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>O capital segurado recebe atualização monetária anual, preservando o valor da cobertura ao longo do tempo. E o melhor: essa atualização acontece sem cobrança de prêmio adicional para o associado.</div></div>
+        <p>Agora, que tal entender como o prêmio é calculado? Você não precisa decorar a fórmula, mas é importante entender como esse valor é definido.</p>
+        <div class="painel">
+          <p style="font-family:var(--t);font-weight:900;font-style:italic;color:var(--verde-esc);font-size:20px">Fórmula do cálculo do prêmio</p>
+          <p style="font-weight:800;margin-top:4px">(Taxa mensal ÷ 30) × Capital Segurado × Número de dias segurados</p>
+          <p style="margin-top:14px;color:var(--cinza)">Experimente com valores de exemplo:</p>
+          <div class="campos" style="margin-top:10px">
+            <label class="campo">Idade do associado<select id="cIdade"></select></label>
+            <label class="campo">Capital segurado (R$)<input id="cCap" type="number" min="0" step="1000" value="100000"></label>
+            <label class="campo">Dias segurados<input id="cDias" type="number" min="1" max="31" value="30"></label>
+          </div>
+          <div class="formula" id="formula"></div>
+          <p style="font-size:13px;color:var(--cinza)">Cálculo ilustrativo para fins de treinamento.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <h2 class="tit">Cancelamento do seguro e devolução do prêmio</h2>
+        <p class="lead" style="margin-top:12px">O associado pode solicitar o cancelamento do seguro Tranquilidade Financeira sempre que desejar. Além disso, existe outra situação em que o cancelamento acontece automaticamente.</p>
+        <div class="flips">
+          <div class="flip" tabindex="0"><div class="in"><div class="f"><svg viewBox="0 0 110 110" style="width:96px;height:96px"><circle cx="55" cy="55" r="50" fill="#62C633"/><rect x="38" y="24" width="34" height="62" rx="7" fill="#fff"/><rect x="43" y="32" width="24" height="38" rx="3" fill="#DDF3D0"/><circle cx="55" cy="78" r="3.5" fill="#136D38"/></svg><h4>Cancelamento solicitado pelo associado</h4><small>Toque para virar ↻</small></div><div class="v">O associado pode pedir o cancelamento do seguro a qualquer momento.</div></div></div>
+          <div class="flip" tabindex="0"><div class="in"><div class="f"><svg viewBox="0 0 110 110" style="width:96px;height:96px"><circle cx="55" cy="55" r="50" fill="#62C633"/><rect x="30" y="28" width="50" height="56" rx="6" fill="#fff"/><path d="M40 44h30M40 54h30M40 64h18" stroke="#DDF3D0" stroke-width="5" stroke-linecap="round"/><path d="M58 70l7 7 13-15" stroke="#136D38" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Quitação antecipada da operação</h4><small>Toque para virar ↻</small></div><div class="v">Se a operação de crédito for quitada antecipadamente, o Certificado Individual também será cancelado automaticamente.</div></div></div>
+        </div>
+        <p style="margin-top:26px">Nos dois casos, quando houver valores a serem devolvidos ao associado, essa devolução será realizada conforme as regras do produto, pelo método <b>Pro Rata Temporis</b>. Em outras palavras, a devolução do prêmio considera apenas o período em que o seguro permaneceu vigente.</p>
+        <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="24" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M30 14v16l10 6" stroke="#0B4424" stroke-width="3.5" stroke-linecap="round"/></svg><div>Assim, o associado recebe de volta o valor proporcional ao tempo de cobertura não utilizado, conforme as regras previstas para o produto.</div></div>
+
+        <h3 class="subt">Como a idade influencia no valor?</h3>
+        <p>Outro fator importante é a idade do associado. À medida que a faixa etária aumenta, também aumenta a taxa mensal utilizada no cálculo do prêmio. O manual apresenta uma tabela completa com todas as faixas etárias e respectivas taxas de referência. Vamos conferir esses detalhes na tabela a seguir:</p>
+        <div class="painel duas" style="align-items:start">
+          <div class="taxas-scroll"><table class="taxas" id="taxas"></table></div>
+          <div class="resultado" style="margin-top:0"><b style="font-family:var(--t);font-style:italic;font-size:44px;color:var(--verde-esc);display:block;line-height:1">34%</b>Além disso, o produto prevê 34% de corretagem, conforme as regras da operação.<br><br><small>Clique numa faixa etária da tabela para usá-la no cálculo do prêmio.</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="wrap">
+        <div class="sub">Reforçando conceitos…</div>
+        <div class="situ">
+          <div class="situ-pers" data-pers="P01"></div>
+          <div><p class="lead">Um associado quitou antecipadamente sua operação de crédito e perguntou o que acontece com o Seguro Tranquilidade Financeira.</p>
+            <p style="font-weight:800;font-size:20px;color:var(--verde-esc);margin-top:10px">Qual alternativa está correta?</p></div>
+        </div>
+        <div class="quiz quizg dois">
+          <button class="alt" data-c="0" data-fb="Não é isso. Quando ocorre a quitação antecipada da operação de crédito, o Certificado Individual é cancelado automaticamente."><span class="letra">A</span><p>O seguro permanece ativo até o final da vigência originalmente contratada.</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="1" data-fb="Muito bem, acertou! A quitação antecipada da operação encerra automaticamente a cobertura do seguro. Se houver valores a serem devolvidos, eles serão calculados proporcionalmente ao período não utilizado, conforme a metodologia Pro Rata Temporis."><span class="letra">B</span><p>O Certificado Individual é cancelado automaticamente e, quando houver valores devidos, o associado receberá a devolução proporcional do prêmio.</p><span class="escolher">Escolher essa</span></button>
+        </div>
+        <div class="feedback fbg"><svg class="ic-ok" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-x" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff"/><path d="M21 21l18 18M39 21 21 39" stroke="#8a3b2e" stroke-width="5" stroke-linecap="round"/></svg><div><b class="fbtit" style="font-size:19px"></b><p class="fbt" style="margin-top:4px"></p></div></div>
+        <div class="fim-mod"><button class="btn esc" data-concluir="6">Concluir módulo 6 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M7 -->
+<section class="modulo" id="mod7" data-mod="7">
+  <div class="mod-abre"><div class="wrap grid">
+    <div class="txt"><div class="mod-num">07</div><h2 class="tit">Benefícios extras, sinistros e canais de atendimento</h2><p class="lead">Chegamos ao último módulo do nosso curso! Até aqui, entendemos como o produto Tranquilidade Financeira protege o associado, conhecemos as regras de contratação e acompanhamos todo o fluxo da operação. Clique em “Continuar” e vá em frente!</p>
+      <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m7-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
+      <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
+    <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F13_Casal-Positivo.jpg" alt="Casal sorridente fazendo sinal de positivo"></div><div class="pers dir" data-pers="P04"></div></div>
+  </div></div>
+  <div class="mod-conteudo">
+    <div class="sec" id="m7-conteudo">
+      <div class="wrap">
+        <div class="sub">Módulo 7</div>
+        <h2 class="tit">Um benefício que vai além da proteção</h2>
+        <div class="txt-img">
+          <div><p class="lead">Sabemos que o seguro Tranquilidade Financeira já oferece um benefício muito importante: proteger o associado e sua família diante de imprevistos. Mas existe um diferencial que torna o produto ainda mais atrativo:</p>
+            <div class="destaque"><svg viewBox="0 0 60 60" fill="none"><rect x="8" y="18" width="44" height="26" rx="5" fill="#fff" stroke="#0B4424" stroke-width="3"/><path d="M30 18v26" stroke="#0B4424" stroke-width="3" stroke-dasharray="4 4"/><path d="M42 26l2 4 4 .5-3 3 1 4-4-2-4 2 1-4-3-3 4-.5Z" fill="#0B4424"/></svg><div>O produto prevê participação em sorteio mensal no valor bruto de R$ 50 mil, conforme as regras e condições do benefício.</div></div>
+            <p>Além de toda a proteção oferecida pelo seguro, esse benefício representa mais um diferencial que pode ser apresentado durante a oferta do produto.</p></div>
+          <div data-ilu="calculadora"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <h2 class="tit">E se acontecer um sinistro?</h2>
+        <p class="lead" style="margin-top:12px">Apesar de ninguém desejar passar por esse momento, é importante saber que existe um processo estruturado para garantir o atendimento ao associado e aos seus beneficiários.</p>
+        <div class="painel">
+          <div class="alterna" id="altSin" style="max-width:560px;margin-top:0"><button class="on" data-f="a">Quando o associado avisa</button><button data-f="c">Quando o colaborador atende</button></div>
+          <div id="fluxoSin"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="wrap">
+        <h2 class="tit">Onde o associado pode buscar atendimento?</h2>
+        <p class="lead" style="margin-top:12px">Sempre que surgir uma dúvida ou necessidade de suporte, o associado pode entrar em contato pelos canais a seguir. Vamos conhecer cada um deles:</p>
+        <div class="canais">
+          <div class="canal mapfre"><h4><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg>Central de Atendimento MAPFRE</h4>
+            <div class="tel"><span>Capitais e principais regiões metropolitanas (ligação com custo de chamada local)</span><b>4002 7055</b></div>
+            <div class="tel"><span>Demais localidades</span><b>0800 775 7055</b></div>
+            <p style="font-size:14px;color:var(--cinza);margin-top:8px">Esses canais podem ser utilizados para esclarecimento de dúvidas e solicitações relacionadas ao seguro.</p></div>
+          <div class="canal sicredi"><h4><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>Canais Sicredi</h4>
+            <div class="tel"><span>SAC e Ouvidoria: informações, sugestões, elogios, reclamações ou denúncias</span><b>0800 724 7220</b></div>
+            <div class="tel"><span>Atendimento para pessoas com deficiência auditiva ou de fala</span><b>0800 724 0525</b></div></div>
+        </div>
+        <p style="margin-top:22px">Assim, todos os associados podem receber suporte de forma adequada às suas necessidades.</p>
+
+        <h3 class="subt">E se o associado procurar a agência?</h3>
+        <p>Nem sempre o primeiro contato será diretamente com a seguradora. Muitas vezes, o associado procura a própria agência do Sicredi em busca de orientação.</p>
+        <div class="fluxo">
+          <div class="et"><b>1. Primeiro atendimento</b>Nesses casos, o colaborador deve prestar o primeiro atendimento e esclarecer todas as dúvidas que estiverem ao seu alcance. Caso seja necessário um suporte especializado, existe um fluxo específico para esse encaminhamento.</div>
+          <div class="et"><b>2. Chamado no CSS</b>Os colaboradores da agência devem abrir um chamado para o time de Prestamista do CAS por meio da Central de Serviços e Soluções (CSS), seguindo o caminho:<div class="caminho-sis"><span>Serviços Corporativos</span>›<span>Seguros</span>›<span>Seguro Vida e Prestamista</span></div></div>
+        </div>
+        <p style="margin-top:22px">Dessa forma, o associado recebe o suporte adequado sempre que houver necessidade.</p>
+      </div>
+    </div>
+    <div class="sec off">
+      <div class="wrap">
+        <div class="sub">Reforçando conceitos…</div>
+        <div class="situ">
+          <div class="situ-pers" data-pers="P05"></div>
+          <div><p class="lead">Um associado entra em contato com a agência informando que precisa de orientações sobre um possível sinistro relacionado ao Seguro Tranquilidade Financeira.</p>
+            <p style="font-weight:800;font-size:20px;color:var(--verde-esc);margin-top:10px">Qual deve ser a conduta do colaborador?</p></div>
+        </div>
+        <div class="quiz quizg">
+          <button class="alt" data-c="0" data-fb="Não é essa a orientação. O colaborador deve acolher o associado e prestar o atendimento inicial na própria agência."><span class="letra">A</span><p>Solicitar que o associado procure outra agência do Sicredi.</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="0" data-fb="Incorreto. Embora a análise do sinistro seja realizada pela seguradora, a agência tem um papel importante no apoio e na orientação ao associado."><span class="letra">B</span><p>Informar que o Sicredi não participa do processo de atendimento aos sinistros.</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="1" data-fb="Muito bem! Sempre que o atendimento exigir suporte especializado, o colaborador deve registrar um chamado para o time de Prestamista do CAS por meio da Central de Serviços e Soluções (CSS), garantindo que o associado receba o acompanhamento adequado."><span class="letra">C</span><p>Prestar o atendimento inicial e, caso seja necessário suporte especializado, abrir um chamado para o time de Prestamista do CAS por meio da Central de Serviços e Soluções (CSS).</p><span class="escolher">Escolher essa</span></button>
+          <button class="alt" data-c="0" data-fb="O aviso de sinistro deve ser realizado assim que houver necessidade, seguindo o fluxo estabelecido para esse tipo de atendimento."><span class="letra">D</span><p>Orientar o associado a aguardar até o encerramento da operação de crédito para comunicar o sinistro.</p><span class="escolher">Escolher essa</span></button>
+        </div>
+        <div class="feedback fbg"><svg class="ic-ok" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#62C633"/><path d="M18 31l8 8 16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="ic-x" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="26" fill="#fff"/><path d="M21 21l18 18M39 21 21 39" stroke="#8a3b2e" stroke-width="5" stroke-linecap="round"/></svg><div><b class="fbtit" style="font-size:19px"></b><p class="fbt" style="margin-top:4px"></p></div></div>
+        <div class="fim-mod"><button class="btn esc" data-concluir="7">Concluir módulo 7 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VÍDEO VID01 (EM PRODUÇÃO) ================= -->
+<section class="sec" id="video">
+  <div class="wrap">
+    <div class="sub rv">Recapitulando!</div>
+    <h2 class="tit rv">Vídeo-resumo</h2>
+    <p class="lead rv" style="margin-top:10px">Antes de concluirmos todo o conteúdo, queremos que você assista ao vídeo a seguir, que resume os principais conceitos aprendidos aqui. Assim, o seu atendimento será completo, beneficiando o associado e toda a rede cooperada!</p>
+    <div class="video-prod rv">
+      <div class="tela16" id="tela16"></div>
+      <div class="vp-veu"></div>
+      <div class="vp-card">
+        <div class="vp-ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="16" width="38" height="26" rx="4"/><path d="M5 16 9 6l34 2-3 8M15 7l-3 9M25 7l-3 9M35 8l-3 8"/><path d="M21 24v11l9-5.5Z" fill="currentColor"/></svg></div>
+        <span class="vp-tag">Em produção</span>
+        <h3>O vídeo-resumo está sendo produzido</h3>
+        <p>Em breve ele estará disponível neste espaço. Enquanto isso, veja algumas cenas que farão parte dele.</p>
+        <div class="vp-dots" id="vpDots"></div>
+      </div>
+    </div>
+    <div class="cenas-lista" id="cenasLista" hidden></div>
+  </div>
+</section>
+
+<!-- ================= ENCERRAMENTO ================= -->
+<section class="fim" id="fim">
+  <div class="wrap">
+    <div class="trofeu" data-ilu="trofeu"></div>
+    <h2>Parabéns!</h2>
+    <p>Você concluiu o curso sobre o Seguro Tranquilidade Financeira.</p>
+    <p>Ao longo desta jornada, vimos que esse produto vai muito além de acompanhar uma operação de crédito. Ele representa proteção para o associado, segurança para sua família e sustentabilidade para a cooperativa.</p>
+    <p>Agora você conhece as principais regras de contratação, entende como funciona o processo de venda e operacionalização e sabe orientar o associado em diferentes situações do dia a dia.</p>
+    <div class="destaque-fim">Lembre-se: por trás de cada proposta existe uma pessoa, uma família e um patrimônio construído com muito esforço. Oferecer o Tranquilidade Financeira é contribuir para que esses projetos continuem protegidos, mesmo diante dos imprevistos da vida.</div>
+    <p>Obrigado pela sua participação e até o próximo treinamento!</p>
+  </div>
+</section>
+
+<footer class="rodape"><div class="wrap"><img src="assets/MAP08_logos-Sicredi-Mapfre.png" alt="Sicredi e Mapfre"><span>Seguro Prestamista Tranquilidade Financeira</span></div></footer>
+
+<script src="assets/MAP08_personagens.js"></script>
+<script>
+/* ================= ILUSTRAÇÕES =================
+   Personagens: estilo chapado, sem contorno, corpo inteiro e proporções realistas
+   (referência de estilo indicada pela direção: personagens do COP01), adaptados ao contexto
+   Sicredi: camisa branca com marca verde, agro, chapéu de palha. Objetos: formas chapadas. */
+const K='#0B4424', G='#62C633', E='#136D38', N='#0B4424', M='#DDF3D0', W='#fff';
+const sw='stroke="#0B4424" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"';
+const PELE={a:'#F2C9A6',b:'#DBA27D',c:'#A86B48',d:'#77482F'};
+const CAB={castanho:'#4A2E22',preto:'#1E1918',ruivo:'#8A4A2A',grisalho:'#D9D5CE',loiro:'#C99A55'};
+const escurece=(hex,f=.82)=>{const n=parseInt(hex.slice(1),16);const c=[n>>16,(n>>8)&255,n&255].map(v=>Math.round(v*f));return '#'+c.map(v=>v.toString(16).padStart(2,'0')).join('')};
+const P=MAP08P.P; /* personagens: assets/MAP08_personagens.js */
+const chao=(w,y,c=G,o=.25)=>`<ellipse cx="${w/2}" cy="${y}" rx="${w*.42}" ry="10" fill="${c}" opacity="${o}"/>`;
+const folhas=(x,y,r=0,c=G)=>`<g transform="translate(${x} ${y}) rotate(${r})"><path d="M0 0 C10 -18 30 -20 40 -18 C34 -6 18 4 0 0Z" fill="${c}"/><path d="M0 0 C-8 -16 -6 -30 2 -40 C10 -30 10 -14 0 0Z" fill="${E}"/></g>`;
+const trigo=(x,y,h=70)=>`<g transform="translate(${x} ${y})"><path d="M0 0 V-${h}" stroke="#B88A3A" stroke-width="3"/>${[0,1,2,3].map(i=>`<ellipse cx="-5" cy="${-h+8+i*12}" rx="4.5" ry="8" transform="rotate(-30 -5 ${-h+8+i*12})" fill="#E6C77F"/><ellipse cx="5" cy="${-h+14+i*12}" rx="4.5" ry="8" transform="rotate(30 5 ${-h+14+i*12})" fill="#D6B062"/>`).join('')}</g>`;
+const escudo=(x,y,s,c=G)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 -40 L34 -28 V0 C34 24 18 40 0 46 C-18 40 -34 24 -34 0 V-28Z" fill="${c}"/><path d="M0 -40 L34 -28 V0 C34 24 18 40 0 46Z" fill="${escurece(c,.85)}"/><path d="M-13 2l9 9 18-20" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+const ILU={
+familia:`<svg viewBox="0 0 420 380">${chao(420,352,N,.35)}
+ <path d="M210 26 L356 76 V178 C356 270 294 330 210 358 C126 330 64 270 64 178 V76Z" fill="${M}"/><path d="M210 26 L356 76 V178 C356 270 294 330 210 358Z" fill="#CBEBB8"/>
+ ${trigo(96,346,90)}${trigo(116,350,70)}${trigo(330,346,84)}${folhas(52,352,-10)}${folhas(380,348,190,G)}
+ ${P('produtor',160,352,236)}${P('produtora',262,352,222,{pose:'aceno'})}${P('crianca',212,352,128)}
+ ${escudo(330,74,.62)}</svg>`,
+cafe:`<svg viewBox="0 0 300 220">${chao(300,206)}<rect x="40" y="150" width="180" height="10" rx="4" fill="${E}"/><path d="M168 160 V206 M92 160 V206" stroke="${E}" stroke-width="6"/>${P('colaboradora',240,210,190,{pose:'tablet'})}<path d="M70 120 H120 V146 C120 154 112 158 104 158 H86 C78 158 70 154 70 146Z" fill="${G}"/><path d="M120 128 C134 126 134 146 120 146" fill="none" stroke="${G}" stroke-width="5"/><path d="M86 110 C82 100 90 96 86 86 M104 110 C100 100 108 96 104 86" fill="none" stroke="${E}" stroke-width="3" stroke-linecap="round"/></svg>`,
+alvo:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="${M}"/><circle cx="60" cy="60" r="32" fill="#fff"/><circle cx="60" cy="60" r="16" fill="${G}"/><path d="M60 60 L102 18" stroke="${E}" stroke-width="5" stroke-linecap="round"/><path d="M92 14 L106 14 L106 28" fill="none" stroke="${E}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+campo:`<svg viewBox="0 0 460 340"><path d="M0 286 C120 250 300 270 460 232 V340 H0Z" fill="${G}"/><path d="M0 314 C140 290 320 310 460 282 V340 H0Z" fill="${E}"/>
+ <circle cx="380" cy="70" r="34" fill="#FFE08A"/>${trigo(52,300,110)}${trigo(78,306,90)}${trigo(400,284,100)}${trigo(426,290,80)}
+ ${P('produtor',200,300,250)}${P('idosa',290,296,226,{pose:'aceno'})}</svg>`,
+contrato:`<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" fill="${G}" opacity=".25"/><rect x="48" y="30" width="100" height="134" rx="10" fill="#fff"/><path d="M66 62 H130 M66 80 H130 M66 98 H112" stroke="${E}" stroke-width="5" stroke-linecap="round"/><path d="M66 140 C76 124 84 150 96 134 S112 136 124 130" fill="none" stroke="#2B2321" stroke-width="3" stroke-linecap="round"/>${escudo(142,136,.62)}</svg>`,
+escudo2:`<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" fill="${G}" opacity=".25"/><path d="M100 20 L164 43 V96 C164 142 134 172 100 184 C66 172 36 142 36 96 V43Z" fill="#fff"/><path d="M100 20 L164 43 V96 C164 142 134 172 100 184Z" fill="${M}"/>${P('produtor',78,176,132)}<g transform="translate(134 154)"><path d="M-22 0 V-30 L0 -46 L22 -30 V0Z" fill="${G}"/><path d="M-28 -28 L0 -50 L28 -28" fill="none" stroke="${E}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="-7" y="-18" width="14" height="18" fill="${E}"/></g></svg>`,
+sonhos:`<svg viewBox="0 0 440 300">${chao(440,272)}<g transform="translate(30 156)"><path d="M0 110 V44 L64 0 L128 44 V110Z" fill="${M}"/><path d="M-10 50 L64 -6 L138 50" fill="none" stroke="${E}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><rect x="48" y="62" width="32" height="48" fill="${G}"/><rect x="14" y="54" width="24" height="22" fill="#fff"/></g>
+ <g transform="translate(262 222)"><path d="M0 44 V20 C0 12 6 6 14 6 H60 L84 -16 H130 C140 -16 146 -8 146 2 V44Z" fill="${G}"/><path d="M84 -16 H130 C140 -16 146 -8 146 2 V20 H84Z" fill="${E}" opacity=".35"/><circle cx="32" cy="48" r="16" fill="#2F3A36"/><circle cx="116" cy="48" r="16" fill="#2F3A36"/><circle cx="32" cy="48" r="6" fill="#ccc"/><circle cx="116" cy="48" r="6" fill="#ccc"/></g>
+ ${P('produtora',214,272,200,{pose:'aceno'})}<g transform="translate(370 70)"><circle r="32" fill="#FFE08A"/><text x="0" y="12" font-family="Exo 2" font-weight="900" font-size="32" text-anchor="middle" fill="${E}">R$</text></g></svg>`,
+'familia-mini':`<svg viewBox="0 0 260 170">${chao(260,162)}${trigo(26,160,70)}${trigo(236,160,60)}${P('produtor',96,162,150)}${P('produtora',162,162,142)}${P('crianca',130,162,82)}</svg>`,
+coop:`<svg viewBox="0 0 260 170">${chao(260,162)}<path d="M30 158 V74 L110 30 L190 74 V158Z" fill="${M}"/><path d="M16 80 L110 22 L204 80" fill="none" stroke="${E}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><rect x="88" y="104" width="44" height="54" fill="${G}"/><rect x="46" y="96" width="28" height="24" fill="#fff"/><rect x="146" y="96" width="28" height="24" fill="#fff"/><g transform="translate(110 66)"><path d="M0 -12 C5 -5 5 5 0 12 C-5 5 -5 -5 0 -12Z" fill="${G}"/><path d="M-12 0 C-5 -5 5 -5 12 0 C5 5 -5 5 -12 0Z" fill="${E}"/></g>${P('gerente',226,162,142)}</svg>`,
+maos:`<svg viewBox="0 0 240 220">${chao(240,208)}${P('gerente',84,208,196,{pose:'braco'})}${P('idosa',162,208,182)}<path d="M196 40 C196 28 212 28 212 40 C212 28 228 28 228 40 C228 54 212 62 212 66 C212 62 196 54 196 40Z" fill="${G}"/></svg>`,
+'ico-familia':`<svg viewBox="0 0 110 110"><defs><clipPath id="cf"><circle cx="55" cy="55" r="50"/></clipPath></defs><circle cx="55" cy="55" r="50" fill="${G}"/><g clip-path="url(#cf)">${P('produtor',38,170,190)}${P('produtora',74,170,180)}${P('crianca',56,150,110)}</g></svg>`,
+'ico-coop':`<svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="50" fill="${G}"/><path d="M26 82 V50 L55 32 L84 50 V82Z" fill="#fff"/><path d="M20 52 L55 28 L90 52" fill="none" stroke="${E}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="47" y="60" width="16" height="22" fill="${E}"/><path d="M55 38 C59 42 59 48 55 52 C51 48 51 42 55 38Z" fill="${G}"/></svg>`,
+cadeado:`<svg viewBox="0 0 46 46"><rect x="8" y="20" width="30" height="22" rx="6" fill="${M}" ${sw}/><path d="M14 20 V14 a9 9 0 0 1 18 0 V20" fill="none" ${sw}/><circle cx="23" cy="31" r="3" fill="${K}"/></svg>`,
+parceria:`<svg viewBox="0 0 460 320"><path d="M0 286 C160 250 300 274 460 236 V320 H0Z" fill="${G}" opacity=".35"/>${P('mapfre',170,300,250,{pose:'tablet'})}${P('gerente',290,300,262,{pose:'aceno'})}${escudo(230,60,.75)}</svg>`,
+'escudo-branco':`<svg viewBox="0 0 100 100"><path d="M50 8 L84 20 V48 C84 72 68 86 50 94 C32 86 16 72 16 48 V20Z" fill="${G}"/><path d="M34 50l11 11 21-23" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+agricultor:`<svg viewBox="0 0 460 340"><path d="M0 300 C120 260 320 280 460 240 V340 H0Z" fill="${G}"/>${trigo(40,300,100)}${trigo(66,304,80)}${trigo(420,280,90)}${P('idoso',200,300,250)}${P('colaboradora',300,296,236,{pose:'tablet'})}<g transform="translate(96 84)"><path d="M-40 -22 H40 V14 H6 L-8 28 V14 H-40Z" fill="#fff"/><text x="0" y="5" font-family="Exo 2" font-weight="900" font-size="24" text-anchor="middle" fill="${E}">?</text></g></svg>`,
+regras:`<svg viewBox="0 0 460 320">${chao(460,300)}<rect x="70" y="40" width="200" height="250" rx="16" fill="#fff"/><rect x="130" y="24" width="80" height="32" rx="10" fill="${G}"/>${[0,1,2,3].map(i=>`<g transform="translate(96 ${84+i*50})"><rect width="26" height="26" rx="6" fill="${i<3?G:M}"/>${i<3?'<path d="M6 13l5 5 10-11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>':''}<path d="M44 13 H${130-i*18}" stroke="${M}" stroke-width="8" stroke-linecap="round"/></g>`).join('')}${P('colaborador',350,300,262,{pose:'aceno'})}</svg>`,
+laptop:`<svg viewBox="0 0 460 320">${chao(460,300)}<path d="M40 246 H300 L318 272 H22Z" fill="${E}"/><rect x="62" y="80" width="216" height="166" rx="12" fill="#2F3A36"/><rect x="74" y="92" width="192" height="142" rx="6" fill="${M}"/><text x="170" y="166" font-family="Exo 2" font-style="italic" font-weight="900" font-size="50" text-anchor="middle" fill="${E}">100%</text><text x="170" y="200" font-family="Exo 2" font-weight="800" font-size="20" text-anchor="middle" fill="${E}">DIGITAL</text>${P('idoso',380,300,250)}</svg>`,
+calculadora:`<svg viewBox="0 0 460 320">${chao(460,300)}<rect x="60" y="50" width="150" height="230" rx="18" fill="${E}"/><rect x="78" y="70" width="114" height="48" rx="8" fill="${M}"/><text x="182" y="104" font-family="Exo 2" font-weight="900" font-size="24" text-anchor="end" fill="${E}">R$</text>${[0,1,2].map(r=>[0,1,2].map(c=>`<rect x="${80+c*38}" y="${134+r*46}" width="30" height="34" rx="8" fill="${(r+c)%2?G:'#fff'}"/>`).join('')).join('')}<g transform="translate(270 272)">${[0,1,2,3].map(i=>`<ellipse cy="${-i*14}" rx="38" ry="10" fill="${i%2?'#E6C77F':'#D6B062'}"/>`).join('')}</g>${P('produtora',372,300,246,{pose:'aceno'})}</svg>`,
+atendente:`<svg viewBox="0 0 460 320">${chao(460,300)}<rect x="30" y="200" width="170" height="10" rx="4" fill="${E}"/><path d="M50 210 V300 M180 210 V300" stroke="${E}" stroke-width="6"/><rect x="70" y="142" width="96" height="58" rx="6" fill="#2F3A36"/><rect x="76" y="148" width="84" height="46" rx="3" fill="${M}"/>${P('colaborador',280,300,256,{pose:'tablet'})}${P('gerente',380,300,260,{pose:'aceno'})}<g transform="translate(118 74)"><path d="M-46 -26 H46 V18 H-6 L-22 34 V18 H-46Z" fill="${G}"/><circle cx="-18" cy="-4" r="6" fill="#fff"/><circle cx="0" cy="-4" r="6" fill="#fff"/><circle cx="18" cy="-4" r="6" fill="#fff"/></g></svg>`,
+trofeu:`<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="100" fill="${G}" opacity=".25"/><path d="M70 40 H150 V90 C150 116 132 132 110 132 C88 132 70 116 70 90Z" fill="#FFE08A"/><path d="M110 40 H150 V90 C150 116 132 132 110 132Z" fill="#E6C77F"/><path d="M70 54 C40 54 42 96 74 98 M150 54 C180 54 178 96 146 98" fill="none" stroke="#E6C77F" stroke-width="7"/><path d="M100 132 V160 H120 V132" fill="#E6C77F"/><rect x="78" y="160" width="64" height="24" rx="6" fill="${E}"/><path d="M96 82l10 10 18-20" fill="none" stroke="${E}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>${folhas(40,190,-20)}${folhas(184,190,200,G)}</svg>`,
+solo:(k,pose)=>`<svg viewBox="0 0 220 430">${P(k,96,422,410,{pose})}</svg>`,
+elenco:`<svg viewBox="0 0 900 300">${chao(900,286,G,.3)}${['produtor','produtora','crianca','idoso','idosa','gerente','colaboradora','colaborador','mapfre'].map((k,i)=>P(k,58+i*98,286,k==='crianca'?150:250,i===1?{pose:'aceno'}:i===6?{pose:'tablet'}:{})).join('')}</svg>`
+};
+/* Imagens geradas no Higgsfield (MAP08-D07) substituem as versões em código */
+const IM=(f,alt='',st='')=>`<img src="assets/${f}" alt="${alt}" loading="lazy" style="${st}">`;
+const PER={P01:'personagens/MAP08_M01_IMG-P01_Produtor.webp',P02:'personagens/MAP08_M01_IMG-P02_Colaboradora.webp',P03:'personagens/MAP08_M01_IMG-P03_Idoso-Produtor.webp',P04:'personagens/MAP08_M01_IMG-P04_Gerente.webp',P05:'personagens/MAP08_M01_IMG-P05_Produtora.webp',P06:'personagens/MAP08_M01_IMG-P06_Crianca.webp',P07:'personagens/MAP08_M01_IMG-P07_Idosa.webp',P08:'personagens/MAP08_M01_IMG-P08_Colaborador.webp',P09:'personagens/MAP08_M01_IMG-P09_Parceira-Mapfre.webp',P10:'personagens/MAP08_M01_IMG-P10_Familia.webp',P11:'personagens/MAP08_M01_IMG-P11_Colaboradora-Apresenta.webp'};
+const CEN={S01:'ilustracoes/MAP08_M01_IMG-S01_Contrato-Escudo.webp',S02:'ilustracoes/MAP08_M01_IMG-S02_Protecao-Dupla.webp',S03:'ilustracoes/MAP08_M01_IMG-S03_Sonhos.webp',S04:'ilustracoes/MAP08_M01_IMG-S04_Checklist.webp',S05:'ilustracoes/MAP08_M01_IMG-S05_DPS-Digital.webp',S06:'ilustracoes/MAP08_M01_IMG-S06_Calculadora-Sorteio.webp',S07:'ilustracoes/MAP08_M01_IMG-S07_Trofeu.webp'};
+Object.assign(ILU,{
+ familia:IM(PER.P10,'Família de associados'), 'familia-mini':IM(PER.P10,'Família'), cafe:IM(PER.P11,'Colaboradora com café','max-height:300px;width:auto'),
+ contrato:IM(CEN.S01,'Contrato protegido'), escudo2:IM(CEN.S02,'Proteção para família e cooperativa'), sonhos:IM(CEN.S03,'Sonhos realizados com crédito'),
+ regras:IM(CEN.S04,'Checklist'), laptop:IM(CEN.S05,'DPS digital'), calculadora:IM(CEN.S06,'Calculadora e sorteio'), trofeu:IM(CEN.S07,'Troféu'),
+ agricultor:IM(PER.P03,'Produtor'), atendente:IM(PER.P08,'Colaborador'), campo:IM(PER.P01,'Produtor'),
+ parceria:`<div style="display:flex;align-items:flex-end;justify-content:center;gap:2%;height:100%">${IM(PER.P09,'Parceira Mapfre','height:100%;width:auto')}${IM(PER.P04,'Gerente','height:100%;width:auto')}</div>`,
+ 'ico-familia':`<div style="width:110px;height:110px;border-radius:50%;background:#62C633;overflow:hidden;margin:0 auto">${IM(PER.P10,'Família','width:100%;height:100%;object-fit:cover;object-position:50% 8%')}</div>`,
+ elenco:`<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:4px;flex-wrap:nowrap;overflow-x:auto">${['P01','P05','P06','P03','P07','P04','P02','P08','P09'].map(k=>IM(PER[k],'','height:'+(k==='P06'?'130px':'200px')+';width:auto;flex:none')).join('')}</div>`
+});
+ILU.solo=(k)=>IM(PER[k]||PER.P02,'');
+document.querySelectorAll('[data-ilu]').forEach(el=>{el.innerHTML=ILU[el.dataset.ilu]||''});
+document.querySelectorAll('[data-pers]').forEach(el=>{const [k,pose]=el.dataset.pers.split(':');el.innerHTML=ILU.solo(k)});
+
+/* ================= DADOS DOS MÓDULOS ================= */
+const MODS=[
+ ['O que é o “Tranquilidade Financeira”?','Produto e proteção ao associado e à cooperativa'],
+ ['A parceria de sucesso: por que a Mapfre?','Os 5 pilares do diferencial'],
+ ['Qual o impacto na vida das pessoas?','Patrimônio da família e regras de idade'],
+ ['Quais são as “regras do jogo”?','Capital segurado, modalidades e PJ'],
+ ['Como fazer a DPS e oferecer o seguro','Limites, processo digital e oferta'],
+ ['Qual o caminho da operacionalização?','Vigência, prêmio, cancelamento'],
+ ['Benefícios, sinistros e atendimento','Sorteio, sinistro e canais']];
+const MSG=['Vamos começar? Então, clique sobre o “Módulo 1”!','Opa, bora para o próximo módulo!','Muito bem! Preparado(a) para o próximo módulo? Vamos lá!','Maravilha, você concluiu mais um módulo. Vamos adiante!','Uau, já passamos da metade do curso! Pegue uma água e bora para o próximo!','Estamos nos aproximando do fim do curso! Pronto(a) para o próximo?','Puxa vida! Chegamos ao último módulo dessa incrível jornada.','Jornada concluída! Veja o vídeo-resumo e o encerramento.'];
+document.getElementById('modsMini').innerHTML=MODS.map((m,i)=>`<div><em>${String(i+1).padStart(2,'0')}</em>${m[0]}</div>`).join('');
+
+/* ================= ESTADO / MENU INTERATIVO ================= */
+let feitos=0; // módulos concluídos
+try{feitos=parseInt(localStorage.getItem('map08-m01-pv-feitos')||'0',10)||0}catch(e){}
+const salva=()=>{try{localStorage.setItem('map08-m01-pv-feitos',String(feitos))}catch(e){}};
+const pathT=document.getElementById('trilhaPath'),LT=pathT.getTotalLength();
+const POS=[0,1,2,3,4,5,6].map(i=>{const pt=pathT.getPointAtLength(LT*i/6);return [pt.x/1100*100,pt.y/420*100]});
+const trilha=document.getElementById('trilha');
+POS.forEach((p,i)=>{const d=document.createElement('button');d.className='parada';d.style.left=p[0]+'%';d.style.top=p[1]+'%';d.dataset.i=i;
+ d.innerHTML=`<span class="dica"><b>Módulo ${i+1}</b><br>${MODS[i][1]}</span><span class="pino">${i+1}</span><span class="rot">${MODS[i][0]}</span>`;trilha.appendChild(d)});
+const icoCad='<svg viewBox="0 0 24 24" fill="none" stroke="#cfeec0" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const icoOk='<svg viewBox="0 0 24 24" fill="none" stroke="#62C633" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';
+function estado(i){return i<feitos?'feito':i===feitos?'atual':'bloq'}
+function render(){
+ document.querySelectorAll('.parada').forEach(d=>{const i=+d.dataset.i,s=estado(i);d.className='parada '+s;
+  const pino=d.querySelector('.pino');pino.innerHTML=(i+1)+(s==='bloq'?icoCad:s==='feito'?icoOk:'');});
+ document.getElementById('gLista').innerHTML=MODS.map((m,i)=>{const s=estado(i);return `<button class="g-item ${s}" data-i="${i}"><span class="n">${i+1}</span><span><span class="t">${m[0]}</span><br><span class="s">${s==='bloq'?'Bloqueado':s==='feito'?'Concluído ✓':'Disponível agora'} · ${m[1]}</span></span></button>`}).join('');
+ document.getElementById('gProg').textContent=feitos+' de 7';
+ document.querySelectorAll('.modulo').forEach(s=>{const i=+s.dataset.mod-1;s.classList.toggle('bloq',estado(i)==='bloq')});
+ document.querySelectorAll('[data-concluir]').forEach(b=>{const n=+b.dataset.concluir;b.disabled=n<=feitos;b.style.opacity=n<=feitos?.5:1;b.firstChild.textContent=n<=feitos?'Módulo '+n+' concluído ':'Concluir módulo '+n+' '});
+ document.getElementById('mapaMsg').textContent=MSG[Math.min(feitos,7)];
+ document.getElementById('trilhaFeita').style.strokeDasharray=(LT*Math.min(feitos,6)/6)+' 4000';
+}
+function vaiPara(i){if(estado(i)==='bloq'){avisa(i);return}fechaG();document.getElementById('mod'+(i+1)).scrollIntoView({behavior:'smooth'})}
+function avisa(i){const d=document.querySelector(`.parada[data-i="${i}"] .pino`);if(!d)return;d.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:300})}
+trilha.addEventListener('click',e=>{const b=e.target.closest('.parada');if(b)vaiPara(+b.dataset.i)});
+document.getElementById('gLista').addEventListener('click',e=>{const b=e.target.closest('.g-item');if(b)vaiPara(+b.dataset.i)});
+document.querySelectorAll('[data-concluir]').forEach(b=>b.addEventListener('click',()=>{const n=+b.dataset.concluir;if(n===feitos+1){feitos=n;salva();render();setTimeout(()=>document.getElementById(n<7?'mapa':'video').scrollIntoView({behavior:'smooth'}),250)}}));
+const gav=document.getElementById('gaveta'),veu=document.getElementById('veu');
+const abreG=()=>{gav.classList.add('on');veu.classList.add('on')},fechaG=()=>{gav.classList.remove('on');veu.classList.remove('on')};
+document.getElementById('abreMapa').onclick=abreG;document.getElementById('fechaMapa').onclick=fechaG;veu.onclick=fechaG;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')fechaG()});
+if(/revisao/.test(location.search))document.getElementById('liberaTudo').hidden=false;
+document.getElementById('liberaTudo').onclick=()=>{feitos=feitos>=7?0:7;salva();render();document.getElementById('liberaTudo').textContent=feitos>=7?'Reiniciar jornada':'Liberar todos (revisão)'};
+
+
+/* ================= COMPONENTES ================= */
+// abas da apresentação
+document.querySelectorAll('.abas-nav button').forEach(b=>b.onclick=()=>{b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.aba-painel').forEach(p=>p.classList.toggle('on',p.id===b.dataset.aba))});
+// carrossel
+document.querySelectorAll('.carro').forEach(c=>{const tr=c.querySelector('.trilho'),n=tr.children.length,dots=c.querySelector('.dots');let k=0;
+ dots.innerHTML=Array.from({length:n},()=>'<i></i>').join('');const go=j=>{k=(j+n)%n;tr.style.transform=`translateX(-${k*100}%)`;[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===k))};
+ c.querySelectorAll('.seta').forEach(s=>s.onclick=()=>go(k+ +s.dataset.dir));go(0)});
+// lados e flips
+document.querySelectorAll('.lado').forEach(l=>{const f=()=>l.classList.toggle('on');l.onclick=f;l.onkeydown=e=>{if(e.key==='Enter')f()}});
+document.querySelectorAll('.flip').forEach(l=>{const f=()=>l.classList.toggle('on');l.onclick=f;l.onkeydown=e=>{if(e.key==='Enter')f()}});
+// alternadores genéricos
+function alterna(id,cb){const box=document.getElementById(id);box.querySelectorAll('button').forEach(b=>b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));cb(b.dataset)});}
+const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
+const mil=v=>v>=1e6?('R$ '+(v/1e6).toLocaleString('pt-BR',{maximumFractionDigits:2})+' mi'):('R$ '+Math.round(v/1000)+' mil');
+
+/* M2 — roda dos pilares */
+const PIL=[
+ ['Capital robusto','Muita confiabilidade para associado e cooperativa! A Mapfre possui uma capacidade de capital segurado que pode chegar a até R$ 4 milhões. Isso traz muita segurança para operações de crédito de grande porte.','<path d="M30 70h60M36 70V44M54 70V44M72 70V44M90 70V44M26 44h68L60 26Z" fill="none" stroke="#136D38" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>'],
+ ['Aceitação ampla','Sabe aquela burocracia excessiva que trava as vendas? Aqui nós superamos isso. Temos flexibilidade para atender aos mais diferentes perfis de associados, tudo sem processos engessados.','<circle cx="44" cy="40" r="12" fill="none" stroke="#136D38" stroke-width="6"/><circle cx="78" cy="40" r="12" fill="none" stroke="#136D38" stroke-width="6"/><path d="M24 82c0-14 10-22 20-22s20 8 20 22M58 82c0-14 10-22 20-22s20 8 20 22" fill="none" stroke="#136D38" stroke-width="6" stroke-linecap="round"/>'],
+ ['Contratação simplificada','O tempo do nosso associado vale ouro. Por isso, oferecemos processos ágeis e descomplicados, que já nascem totalmente integrados à operação de crédito que ele está realizando.','<path d="M66 18L34 64h26l-6 38 34-50H62Z" fill="none" stroke="#136D38" stroke-width="6" stroke-linejoin="round"/>'],
+ ['Time dedicado e especializado','Ninguém fica na mão! Contamos com um suporte operacional e de pós-venda super eficiente, o que nos garante muita tranquilidade no dia a dia.','<path d="M30 64v-8a30 30 0 0 1 60 0v8" fill="none" stroke="#136D38" stroke-width="6"/><rect x="24" y="60" width="16" height="24" rx="6" fill="none" stroke="#136D38" stroke-width="6"/><rect x="80" y="60" width="16" height="24" rx="6" fill="none" stroke="#136D38" stroke-width="6"/>'],
+ ['Apoio comercial estratégico','Além de todo o suporte técnico, temos uma equipe experiente pronta para desenvolver a nossa força de vendas e apoiar de perto a expansão da operação.','<path d="M22 86l26-26 16 16 32-36M76 40h20v20" fill="none" stroke="#136D38" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>']];
+const roda=document.getElementById('roda');
+PIL.forEach((p,i)=>{const a=-Math.PI/2+i*2*Math.PI/5,b=document.createElement('button');b.style.left=(50+38*Math.cos(a))+'%';b.style.top=(50+38*Math.sin(a))+'%';b.innerHTML=`<svg viewBox="0 0 120 120">${p[2]}</svg>`;b.setAttribute('aria-label',p[0]);b.onclick=()=>pilar(i);roda.appendChild(b)});
+function pilar(i){roda.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('on',i===j));const t=document.getElementById('pilarTxt');t.innerHTML=`<div class="num">Pilar ${i+1} de 5</div><h4>${PIL[i][0]}</h4><p>${PIL[i][1]}</p><p style="margin-top:14px;font-size:14px;color:var(--cinza);font-weight:700">Clique nos círculos para explorar os outros pilares.</p>`;t.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:350})}
+pilar(0);
+
+/* M3 — simulador de herança */
+let comSeg=1;const rPat=document.getElementById('rPat'),rDiv=document.getElementById('rDiv');
+function her(){const p=+rPat.value,d=+rDiv.value,max=Math.max(p,d,1);
+ document.getElementById('vPat').textContent=mil(p);document.getElementById('vDiv').textContent=mil(d);
+ const pago=comSeg?0:Math.min(p,d),h=comSeg?p:Math.max(0,p-d);
+ const H=v=>(v/max*210)+'px';
+ bPat.style.height=H(p);bDiv.style.height=H(comSeg?d:pago);bHer.style.height=H(h);
+ bDiv.style.background=comSeg?'repeating-linear-gradient(45deg,#DDF3D0 0 8px,#fff 8px 16px)':'#e9a598';bDiv.style.border=comSeg?'3px dashed #136D38':'0';
+ document.getElementById('bDivL').innerHTML=comSeg?'Dívida quitada<br>pelo seguro':'Dívida paga<br>com a herança';
+ bPatV.textContent=mil(p);bDivV.textContent=mil(d);bHerV.textContent=mil(h);
+ const r=document.getElementById('resHer');
+ if(comSeg){r.className='resultado';r.innerHTML=`<b>Com o seguro:</b> a dívida é liquidada pelo seguro, o patrimônio permanece preservado e a família recebe ${mil(p)}.`}
+ else if(h===0){r.className='resultado alerta';r.innerHTML=`<b>Sem o seguro:</b> todo o patrimônio é usado para quitar a dívida. Não há herança a ser deixada.`}
+ else{r.className='resultado alerta';r.innerHTML=`<b>Sem o seguro:</b> depois da quitação da dívida, a família recebe apenas ${mil(h)} de herança.`}}
+const bPat=document.getElementById('bPat'),bDiv=document.getElementById('bDiv'),bHer=document.getElementById('bHer'),bPatV=document.getElementById('bPatV'),bDivV=document.getElementById('bDivV'),bHerV=document.getElementById('bHerV');
+rPat.oninput=her;rDiv.oninput=her;alterna('altSeg',d=>{comSeg=+d.s;her();document.getElementById('fotoHer').src=comSeg?'assets/fotos/MAP08_M01_IMG-F07_Mae-Filho-Rural.jpg':'assets/fotos/MAP08_M01_IMG-F06_Dinheiro.jpg';document.getElementById('fotoHerTxt').textContent=comSeg?'Com o seguro':'Sem o seguro'});her();
+
+/* M3 — régua da idade-limite (exemplos do roteiro) */
+const EX=[{nasc:'1950-12-13',ini:'2028-02-12',fim:'2031-12-12',i0:76,i1:81,prazo:'3 anos e 10 meses',txt:'O prazo máximo permitido para essa operação é de <b>3 anos e 10 meses</b>. Ou seja, o contrato precisa terminar até a véspera do associado completar 81 anos de idade.'},
+ {nasc:'1966-02-13',ini:'2026-11-12',fim:'2047-02-12',i0:60,i1:80,prazo:'20 anos e 3 meses',txt:'O prazo máximo da operação é de <b>20 anos e 3 meses</b>. Como o contrato termina antes do limite de idade, o associado está apto para contratar o seguro.'}];
+const idade=(n,d)=>{n=new Date(n);d=new Date(d);let a=d.getFullYear()-n.getFullYear();if(d.getMonth()<n.getMonth()||(d.getMonth()===n.getMonth()&&d.getDate()<n.getDate()))a--;return a};
+const dt=s=>s.split('-').reverse().join('/');
+const anosF=(n,d)=>(new Date(d)-new Date(n))/(365.2425*864e5);
+function ex(k){document.getElementById('fotoEx').src=k?'assets/fotos/MAP08_M01_IMG-F09_Idosa-Sorrindo.jpg':'assets/fotos/MAP08_M01_IMG-F08_Idoso-Banco.jpg';const e=EX[k],a0=e.i0,a1=e.i1,f0=anosF(e.nasc,e.ini),f1=anosF(e.nasc,e.fim),pc0=k===0?' class="pend"':'';
+ document.getElementById('fichaEx').innerHTML=`<div>Nascimento<b>${dt(e.nasc)}</b></div><div>Contratação<b>${dt(e.ini)}</b></div><div>Idade na contratação<b${pc0}>${a0} anos</b></div><div>Final da operação<b>${dt(e.fim)}</b></div><div>Idade ao final do contrato<b${pc0}>${a1} anos</b></div>`;
+ const A=14,B=90,pc=v=>((v-A)/(B-A)*100);const op=document.getElementById('rOp');
+ op.style.left='0%';op.style.width='0%';
+ requestAnimationFrame(()=>setTimeout(()=>{op.style.left=pc(f0)+'%';op.style.width=(pc(f1)-pc(f0))+'%'},40));
+ document.getElementById('rLim').style.left=pc(81)+'%';
+ const ri=document.getElementById('rIni'),rf=document.getElementById('rFim');ri.style.left=pc(f0)+'%';ri.textContent=dt(e.ini);rf.style.left=pc(f1)+'%';rf.textContent=dt(e.fim);
+ document.getElementById('resEx').innerHTML=e.txt}
+alterna('altEx',d=>ex(+d.e));ex(0);
+
+/* M4 — gráfico capital vinculado x fixo */
+function graf(m){const g=document.getElementById('graf'),anos=6;let s=`<line x1="40" y1="250" x2="440" y2="250" stroke="${K}" stroke-width="3"/><line x1="40" y1="20" x2="40" y2="250" stroke="${K}" stroke-width="3"/>`;
+ for(let i=0;i<anos;i++){const x=60+i*64,saldo=200*(1-i/anos),cob=m==='v'?saldo:200*(1+.045*i),h=cob;
+  s+=`<rect x="${x}" y="${250-saldo}" width="22" height="${saldo}" rx="5" fill="#e9a598"/><rect class="b" x="${x+24}" y="${250-h}" width="22" height="${h}" rx="5" fill="${m==='v'?G:E}"/><text x="${x+23}" y="272" font-size="13" font-weight="800" text-anchor="middle" fill="#55605A">Ano ${i+1}</text>`}
+ s+=`<rect x="60" y="282" width="12" height="12" rx="3" fill="#e9a598"/><text x="78" y="293" font-size="12.5" font-weight="700" fill="#55605A">Saldo devedor</text><rect x="190" y="282" width="12" height="12" rx="3" fill="${m==='v'?G:E}"/><text x="208" y="293" font-size="12.5" font-weight="700" fill="#55605A">Valor da cobertura</text>`;
+ g.innerHTML=s;g.querySelectorAll('.b').forEach((b,i)=>b.animate([{transform:'scaleY(0)',transformOrigin:'bottom',transformBox:'fill-box'},{transform:'scaleY(1)',transformOrigin:'bottom',transformBox:'fill-box'}],{duration:500,delay:i*70,fill:'backwards'}));
+ document.getElementById('modTxt').innerHTML=m==='v'?
+ `<h3 style="font-size:26px;font-style:italic;font-weight:900;color:var(--verde-esc)">Capital Vinculado</h3><p>No Capital Vinculado, o valor da cobertura acompanha exatamente o saldo devedor da operação de crédito. Na prática, isso significa que, conforme a dívida diminui ao longo do tempo, o valor da cobertura também é atualizado.</p><p>Além disso, o pagamento do prêmio do seguro acontece mensalmente e considera essa atualização do saldo devedor. Em outras palavras, a cobertura acompanha a evolução da operação de crédito durante toda a sua vigência.</p>`:
+ `<h3 style="font-size:26px;font-style:italic;font-weight:900;color:var(--verde-esc)">Capital Fixo</h3><p>Já no Capital Fixo, acontece o contrário. Nessa modalidade, é emitido um Certificado Individual cuja vigência começa às 00h da data de liberação da operação.</p><p>O capital segurado contratado permanece como referência e recebe atualização monetária anual, sem cobrança de prêmio adicional em razão dessa atualização.</p>`}
+alterna('altMod',d=>graf(d.m));graf('v');
+
+/* M5 — precisa de DPS? */
+const LIM={a:{sem:250000,max:4000000,lab:'até 65 anos'},b:{sem:100000,max:400000,lab:'acima de 65 anos'}};let faixa='a';
+const rCap=document.getElementById('rCap');
+function capVal(){const t=+rCap.value/1000,L=LIM[faixa];const top=L.max*1.15;return Math.round((t*t*top)/5000)*5000}
+function dps(){const v=capVal(),L=LIM[faixa];document.getElementById('vCap').textContent=mil(v);
+ const box=document.getElementById('dpsRes'),ico=document.getElementById('dpsIco');
+ if(v<=L.sem){box.className='dps-res';ico.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>';document.getElementById('dpsTit').textContent='Sem DPS';document.getElementById('dpsTxt').innerHTML=`Para associados ${L.lab}, capitais de até ${mil(L.sem)} dispensam a declaração. A contratação segue normalmente.`}
+ else if(v<=L.max){box.className='dps-res com';ico.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#1D1D1B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>';document.getElementById('dpsTit').textContent='Com DPS';document.getElementById('dpsTxt').innerHTML=`Acima de ${mil(L.sem)} e até <span class="pend">${mil(L.max)}</span>, o associado preenche a Declaração Pessoal de Saúde, 100% digital.`}
+ else{box.className='dps-res fora';ico.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';document.getElementById('dpsTit').textContent='Acima do limite';document.getElementById('dpsTxt').innerHTML=`O capital ultrapassa o limite de ${mil(L.max)} por CPF para associados ${L.lab}.`}}
+rCap.oninput=dps;alterna('altIdade',d=>{faixa=d.i;dps()});dps();
+// checklist da oferta
+const PASSOS=[['Explicar','de forma simples o que é o seguro e para que ele serve.','<circle cx="32" cy="26" r="16" fill="#DDF3D0" stroke="#1D1D1B" stroke-width="3"/><path d="M24 26h16M24 20h10" stroke="#136D38" stroke-width="3.5" stroke-linecap="round"/><path d="M26 42 L22 54 L34 44" fill="#DDF3D0" stroke="#1D1D1B" stroke-width="3" stroke-linejoin="round"/>'],
+ ['Garantir','o consentimento livre do associado, com apresentação do melhor preço.','<path d="M12 36 L26 24 C30 20 36 20 40 24 L52 34" fill="none" stroke="#1D1D1B" stroke-width="3.5" stroke-linecap="round"/><path d="M18 40 L30 50 C34 54 40 52 44 48 L54 38" fill="#62C633" stroke="#1D1D1B" stroke-width="3.5" stroke-linejoin="round"/>'],
+ ['Verificar','a adequação entre idade e capital segurado.','<circle cx="28" cy="28" r="14" fill="#DDF3D0" stroke="#1D1D1B" stroke-width="3.5"/><path d="M38 38 L52 52" stroke="#1D1D1B" stroke-width="5" stroke-linecap="round"/><path d="M22 28l5 5 8-9" fill="none" stroke="#136D38" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'],
+ ['Assegurar','a documentação correta, com proposta assinada.','<rect x="16" y="8" width="32" height="44" rx="5" fill="#fff" stroke="#1D1D1B" stroke-width="3"/><path d="M22 18h20M22 26h20" stroke="#136D38" stroke-width="3" stroke-linecap="round"/><path d="M22 42c4-6 7 4 11-2s6 2 9 0" fill="none" stroke="#1D1D1B" stroke-width="2.5" stroke-linecap="round"/>'],
+ ['Atender','às exigências de conformidade regulatória.','<path d="M32 8 L50 14 V30 C50 42 42 50 32 54 C22 50 14 42 14 30 V14Z" fill="#62C633" stroke="#1D1D1B" stroke-width="3" stroke-linejoin="round"/><path d="M24 31l6 6 11-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>']];
+const passos=document.getElementById('passos');
+passos.innerHTML=PASSOS.map(p=>`<div class="passo" tabindex="0"><span class="chk">✓</span><svg viewBox="0 0 64 64">${p[2]}</svg><b>${p[0]}</b><span style="font-size:13.5px;color:var(--cinza);line-height:1.3;display:block;margin-top:4px">${p[1]}</span></div>`).join('');
+passos.querySelectorAll('.passo').forEach(p=>{const f=()=>{p.classList.toggle('on');const n=passos.querySelectorAll('.on').length;document.getElementById('resPassos').innerHTML=n<5?`${n} de 5 passos marcados.`:'<b>Isso aí!</b> Uma pré-venda clara e transparente evita dúvidas e fortalece a confiança.'};p.onclick=f;p.onkeydown=e=>{if(e.key==='Enter')f()}});
+
+/* M6 — calculadora do prêmio (taxas do manual, p. 26) */
+const TAX=[['14 a 65 anos',0.0520],['66 anos',0.3415],['67 anos',0.3769],['68 anos',0.4163],['69 anos',0.4603],['70 anos',0.5085],['71 anos',0.5871],['72 anos',0.6475],['73 anos',0.7135],['74 anos',0.7853],['75 anos',0.8647],['76 anos',0.9518],['77 anos',1.0482],['78 anos',1.1544],['79 anos',1.2372],['80 anos',1.3620]];
+const cI=document.getElementById('cIdade'),cC=document.getElementById('cCap'),cD=document.getElementById('cDias');
+cI.innerHTML=TAX.map((t,i)=>`<option value="${i}">${t[0]}</option>`).join('');cI.value=0;
+const pct=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:4})+'%';
+document.getElementById('taxas').innerHTML='<tr><td style="background:none;color:var(--cinza);font-size:12px">FAIXA ETÁRIA</td><td style="background:none;color:var(--cinza);font-size:12px">TAXA MENSAL</td></tr>'+TAX.map((t,i)=>`<tr data-i="${i}"><td>${t[0]}</td><td>${pct(t[1])}</td></tr>`).join('');
+document.querySelectorAll('#taxas tr[data-i]').forEach(r=>{r.style.cursor='pointer';r.onclick=()=>{cI.value=r.dataset.i;premio()}});
+function premio(){const t=TAX[+cI.value][1],c=Math.max(0,+cC.value||0),d=Math.max(0,+cD.value||0),v=(t/100/30)*c*d;
+ document.getElementById('formula').innerHTML=`<span class="peca"><small>taxa mensal</small>${pct(t)}</span>÷ 30 ×<span class="peca"><small>capital segurado</small>${brl(c)}</span>×<span class="peca"><small>dias segurados</small>${d}</span>=<span class="peca igual"><small>prêmio</small>${brl(v)}</span>`;
+ document.querySelectorAll('#taxas tr[data-i]').forEach(r=>r.classList.toggle('on',r.dataset.i===cI.value));}
+[cI,cC,cD].forEach(x=>x.oninput=premio);premio();
+
+/* M7 — fluxos de sinistro */
+const FLX={a:[['Evento coberto','O associado ou o beneficiário identifica um evento coberto pelo seguro.'],['Aviso de Sinistro','Contato com a Central de Atendimento Mapfre para registrar o aviso.'],['Análise','A seguradora inicia a análise e o processo de atendimento.']],
+ c:[['Primeiro atendimento','O colaborador acolhe o associado na agência e esclarece as dúvidas ao seu alcance.'],['FirstOne','Formulários, manual e ferramenta de Aviso e Consulta de Sinistros:<div class="caminho-sis"><span>SIS</span>›<span>Sinistros</span>›<span>Vida e Previdência</span>›<span>MAPFRE Seguros</span>›<span>FirstOne</span></div>'],['Chamado no CSS','Se precisar de suporte especializado, abrir chamado para o time de Prestamista do CAS:<div class="caminho-sis"><span>Serviços Corporativos</span>›<span>Seguros</span>›<span>Seguro Vida e Prestamista</span></div>']]};
+function fluxo(k){const f=document.getElementById('fluxoSin');f.innerHTML='<div class="foto-cena" style="aspect-ratio:21/7;margin-top:18px"><img src="'+(k==='a'?'assets/fotos/MAP08_M01_IMG-F15_Produtor-Milho.jpg':'assets/fotos/MAP08_M01_IMG-F16_Colegas-Laptop.jpg')+'" alt=""><span>'+(k==='a'?'Associado ou beneficiário':'Colaborador na agência')+'</span></div><div class="fluxo">'+FLX[k].map(e=>`<div class="et"><b>${e[0]}</b>${e[1]}</div>`).join('')+'</div>';f.querySelectorAll('.et').forEach((e,i)=>e.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:400,delay:i*120,fill:'backwards'}))}
+alterna('altSin',d=>fluxo(d.f));fluxo('a');
+
+/* Quiz M3 */
+const Q3=[['Ambos deixam o mesmo patrimônio para seus herdeiros.',0],['O associado que contratou o Tranquilidade Financeira protege seu patrimônio, pois o seguro pode quitar a dívida da operação de crédito.',1],['O seguro aumenta o valor da herança deixada para a família.',0],['O Seguro Prestamista serve apenas para reduzir o valor das parcelas do financiamento.',0]];
+const q3=document.getElementById('quiz3');
+q3.innerHTML=Q3.map((q,i)=>`<button class="alt" data-c="${q[1]}"><span class="letra">${'ABCD'[i]}</span><p>${q[0]}</p><span class="escolher">Escolher essa</span></button>`).join('');
+q3.querySelectorAll('.alt').forEach(b=>b.onclick=()=>{q3.querySelectorAll('.alt').forEach(x=>{x.disabled=true;x.classList.add(x.dataset.c==='1'?'certa':'errada')});document.getElementById('fb3').classList.add('on')});
+
+/* Atividades com feedback por alternativa */
+document.querySelectorAll('.quizg').forEach(q=>{const fb=q.nextElementSibling;q.querySelectorAll('.alt').forEach(b=>b.onclick=()=>{
+ q.querySelectorAll('.alt').forEach(x=>{x.disabled=true;x.classList.add(x.dataset.c==='1'?'certa':'errada')});
+ const ok=b.dataset.c==='1';b.classList.add('escolhida');fb.classList.toggle('erro',!ok);
+ fb.querySelector('.fbtit').textContent=ok?'Resposta correta':'Resposta incorreta';fb.querySelector('.fbt').textContent=b.dataset.fb;fb.classList.add('on');});});
+
+/* ================= STORYBOARD VID01 ================= */
+const ondaV='<svg class="onda-v" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 C100 0 220 50 400 20 V60 H0Z" fill="#62C633"/><path d="M0 46 C140 24 260 60 400 40 V60 H0Z" fill="#136D38"/></svg>';
+const CENAS=[
+ ['00:00','Vinheta de abertura com as marcas.',`<div class="letr" style="text-align:center;max-width:none"><img src="assets/MAP08_logos-Sicredi-Mapfre.png" alt="" style="height:34px;width:auto;margin:0 auto 14px;background:#136D38;padding:10px 18px;border-radius:30px;box-sizing:content-box">Seguro Prestamista<br>Tranquilidade Financeira</div>`],
+ ['Cena 1','Quer resumir o Seguro Prestamista Tranquilidade Financeira em uma frase? <span class="pend">Proteção dupla!</span>',`${ILU.familia}<div class="letr"><span class="pend">Proteção dupla!</span><small>Seguro Prestamista Tranquilidade Financeira</small></div>`],
+ ['Cena 2','Ele quita a dívida, protege a cooperativa e <span class="pend">garante que a herança da família fique intacta</span>.',`<div style="display:flex;gap:3%;height:70%">${ILU.contrato}${ILU['ico-coop']}${ILU['familia-mini']}</div><div class="letr" style="max-width:30%">Quita a dívida<br>Protege a cooperativa<br><span class="pend">Herança intacta!</span></div>`],
+ ['Cena 3','Nossa parceria com a Mapfre traz oportunidades gigantes: para associados de até 65 anos, o capital segurado chega a <span class="pend">4 milhões de reais</span>!',`${ILU.agricultor}<div class="letr"><span class="pend">R$ 4 milhões!</span><small>Associados de até 65 anos</small></div>`],
+ ['Cena 5','Mas atenção à regra de ouro: o prazo do crédito não pode ultrapassar a idade limite de 81 anos do associado.',`${ILU.regras}<div class="letr">Regra de ouro!<small>O prazo do crédito não pode ultrapassar 81 anos de idade.</small></div>`],
+ ['Cena 6','E a famosa DPS? Esqueça a papelada: o nosso processo é 100% digital.',`${ILU.laptop}<div class="letr">DPS<br>100% digital!</div>`],
+ ['Cena 8','Apresente também nosso diferencial de ouro: um sorteio mensal de 50 mil reais.',`${ILU.calculadora}<div class="letr">Sorteio mensal de R$ 50 mil!<small>valor bruto de IR, conforme regras do benefício</small></div>`],
+ ['Final','Vamos juntos nessa missão!',`${ILU.parceria}<div class="letr">Vamos juntos nessa missão!</div>`]];
+const tela=document.getElementById('tela16'),lista=document.getElementById('cenasLista');
+tela.innerHTML=CENAS.map(c=>`<div class="cena">${c[2]}</div>`).join('')+ondaV+'<div class="marcas"><img src="assets/MAP08_logos-Sicredi-Mapfre.png" alt=""></div><div class="tempo" id="tTempo"></div>';
+lista.innerHTML=CENAS.map((c,i)=>`<button data-i="${i}"><b>${i+1}</b><span><strong>${c[0]}</strong> · ${c[1]}</span></button>`).join('');
+/* Vídeo em produção: as cenas giram ao fundo, sem controles de reprodução */
+let cena=0;const dotsV=document.getElementById('vpDots');
+dotsV.innerHTML=CENAS.map(()=>'<i></i>').join('');
+document.getElementById('tTempo').remove();
+function vaiCena(i){cena=i;tela.querySelectorAll('.cena').forEach((c,j)=>c.classList.toggle('on',i===j));[...dotsV.children].forEach((d,j)=>d.classList.toggle('on',i===j))}
+vaiCena(0);
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(()=>vaiCena((cena+1)%CENAS.length),3200);
+
+/* ================= ROLAGEM: progresso + revelar ================= */
+const prog=document.getElementById('progresso');
+addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+render();
+if(feitos>=7)document.getElementById('liberaTudo').textContent='Reiniciar jornada';
+</script>
+</body>
+</html>
