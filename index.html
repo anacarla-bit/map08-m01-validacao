@@ -504,7 +504,7 @@ body.rev .pend{background:#FFF1B0;border-bottom-color:#E8C547;border-radius:4px;
     <svg class="onda" viewBox="0 0 440 46" preserveAspectRatio="none"><path d="M0 30 C110 0 220 50 330 22 S440 18 440 18 V46 H0Z" fill="#F5F7F2"/></svg>
   </header>
   <div class="lista" id="gLista"></div>
-  <div class="g-rodape"><span>Os módulos são liberados em sequência.</span><button id="liberaTudo" hidden>Liberar todos (revisão)</button></div>
+  <div class="g-rodape"><span>Os módulos são liberados em sequência.</span></div>
 </aside>
 
 <!-- ================= CAPA ================= -->
@@ -589,7 +589,7 @@ body.rev .pend{background:#FFF1B0;border-bottom-color:#E8C547;border-radius:4px;
         <p class="lead">Vamos responder a essa e outras perguntas neste módulo! Clique em continuar para explorar o conteúdo.</p>
         <div style="margin-top:24px"><a class="btn esc" href="#m1-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
       </div>
-      <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F14_Produtora-Tablet.jpg" alt=""></div><div class="pers" data-pers="P01"></div></div>
+      <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F14_Produtora-Tablet.jpg" alt="Produtora rural consultando o tablet no campo" style="transform:scaleX(-1);object-position:50% 8%"></div><div class="pers" data-pers="P01"></div></div>
     </div>
   </div>
   <div class="mod-conteudo">
@@ -1001,7 +1001,7 @@ body.rev .pend{background:#FFF1B0;border-bottom-color:#E8C547;border-radius:4px;
     <div class="txt"><div class="mod-num">07</div><h2 class="tit">Benefícios extras, sinistros e canais de atendimento</h2><p class="lead">Chegamos ao último módulo do nosso curso! Até aqui, entendemos como o produto Tranquilidade Financeira protege o associado, conhecemos as regras de contratação e acompanhamos todo o fluxo da operação. Clique em “Continuar” e vá em frente!</p>
       <div style="margin-top:24px" class="so-livre"><a class="btn esc" href="#m7-conteudo">Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></div>
       <div class="mod-bloqueado"><div data-ilu="cadeado"></div><div><b>Módulo bloqueado</b><br>Conclua o módulo anterior para liberar.</div></div></div>
-    <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F13_Casal-Positivo.jpg" alt="Casal sorridente fazendo sinal de positivo"></div><div class="pers dir" data-pers="P04"></div></div>
+    <div class="ilu-mod combo"><div class="foto-org"><img src="assets/fotos/MAP08_M01_IMG-F13_Casal-Positivo.jpg" alt="Casal sorridente fazendo sinal de positivo" style="object-position:50% 0%"></div><div class="pers dir" data-pers="P04"></div></div>
   </div></div>
   <div class="mod-conteudo">
     <div class="sec" id="m7-conteudo">
@@ -1187,8 +1187,8 @@ document.getElementById('modsMini').innerHTML=MODS.map((m,i)=>`<div><em>${String
 
 /* ================= ESTADO / MENU INTERATIVO ================= */
 let feitos=0; // módulos concluídos
-try{feitos=parseInt(localStorage.getItem('map08-m01-pv-feitos')||'0',10)||0}catch(e){}
-const salva=()=>{try{localStorage.setItem('map08-m01-pv-feitos',String(feitos))}catch(e){}};
+try{feitos=parseInt(localStorage.getItem('map08-m01-progresso-v12')||'0',10)||0}catch(e){}
+const salva=()=>{try{localStorage.setItem('map08-m01-progresso-v12',String(feitos))}catch(e){}};
 const pathT=document.getElementById('trilhaPath'),LT=pathT.getTotalLength();
 const POS=[0,1,2,3,4,5,6].map(i=>{const pt=pathT.getPointAtLength(LT*i/6);return [pt.x/1100*100,pt.y/420*100]});
 const trilha=document.getElementById('trilha');
@@ -1216,8 +1216,6 @@ const gav=document.getElementById('gaveta'),veu=document.getElementById('veu');
 const abreG=()=>{gav.classList.add('on');veu.classList.add('on')},fechaG=()=>{gav.classList.remove('on');veu.classList.remove('on')};
 document.getElementById('abreMapa').onclick=abreG;document.getElementById('fechaMapa').onclick=fechaG;veu.onclick=fechaG;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')fechaG()});
-if(/revisao/.test(location.search))document.getElementById('liberaTudo').hidden=false;
-document.getElementById('liberaTudo').onclick=()=>{feitos=feitos>=7?0:7;salva();render();document.getElementById('liberaTudo').textContent=feitos>=7?'Reiniciar jornada':'Liberar todos (revisão)'};
 
 
 /* ================= COMPONENTES ================= */
@@ -1370,7 +1368,7 @@ addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 render();
-if(feitos>=7)document.getElementById('liberaTudo').textContent='Reiniciar jornada';
+
 </script>
 </body>
 </html>
